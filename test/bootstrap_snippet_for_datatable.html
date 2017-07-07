@@ -39,14 +39,14 @@
                     <tr>
                       <td>Mohsin</td>
                       <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" data-id="1"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                       <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" data-id="1"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                     </tr>
                     
                  <tr>
                     <td>Mohsin</td>
                     <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" data-id="2"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" data-id="2"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                     </tr>
                     
@@ -54,7 +54,7 @@
                  <tr>
                     <td>Irshad</td>
                     <td>isometric.mohsin@gmail.com</td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" data-id="3"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" data-id="3"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                     </tr>
                     
@@ -63,7 +63,7 @@
                  <tr>
                     <td>Mohsin</td>
                     <td>+923335586757</td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" data-id="4"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" data-id="4"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                     </tr>
                     
@@ -71,7 +71,7 @@
                  <tr>
                     <td>Mohsin</td>
                     <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" data-id="5"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                     <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" data-id="5"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                     </tr>
                     
@@ -112,20 +112,18 @@
         
           <div class="modal-body">
             <div class="form-group">
-              <input class="form-control " type="text" placeholder="Mohsin">
-            </div>
-        
-            <div class="form-group">
-              <input class="form-control " type="text" placeholder="Irshad">
+              <label class="control-label" for="edit-title">名称</label>
+                <input id="edit-title" class="form-control " type="text" placeholder="Title"> <!-- disabled -->
             </div>
 
             <div class="form-group">
-              <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+              <label class="control-label" for="edit-description">简介</label>
+              <textarea id="edit-description" rows="3" class="form-control" placeholder="Descrition"></textarea>
             </div>
           </div>
     
           <div class="modal-footer ">
-            <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+            <button type="button" class="btn btn-warning btn-lg" id="confirm-update" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
           </div>
         </div>
     <!-- /.modal-content --> 
@@ -162,8 +160,18 @@
 
     <script type="text/javascript">
 
+      // 清除两边的空格 
+      String.prototype.trim = function() { 
+        return this.replace(/(^\s*)|(\s*$)/g, ''); 
+      }; 
+
        function doDelRow(tr) {
           tr.fadeOut('slow',()=>tr.remove());
+       }
+
+       function doUpdateRow(tr, title, descritpion) {
+          tr.find('td:first-child').text(title);
+          tr.find('td:nth-child(2)').text(descritpion);
        }
 
        var buttonId = undefined;
@@ -189,13 +197,46 @@
                     buttonId = $(e.relatedTarget).data("id");
                   });
 
+              $("#edit").on("show.bs.modal", function(e) {
+                    buttonId = $(e.relatedTarget).data("id");
+
+                    var tr = $("#mytable tr td button.btn-primary[data-id=" + buttonId +"]").parents('tr')
+                    var titlePlaceholder = tr.find('td:first-child').text();
+                    var descPlaceholder = tr.find('td:nth-child(2)').text();
+
+                    $('#edit-title').attr('placeholder', titlePlaceholder)
+                    $('#edit-description').attr('placeholder', descPlaceholder)
+                    $('#edit-title')[0].value = titlePlaceholder
+                    $('#edit-description')[0].value = descPlaceholder
+
+                  });
+
               $("#confirm-delete").click(function () {
                 // console.log("hello");
                 // console.log(buttonId);
-                var tr = $("#mytable tr td button[data-id=" + buttonId +"]").parents('tr')
+                var tr = $("#mytable tr td button.btn-danger[data-id=" + buttonId +"]").parents('tr')
                 // console.log(tr.html());
                 doDelRow(tr);
               });
+
+              $("#confirm-update").click(function () {
+                var tr = $("#mytable tr td button.btn-primary[data-id=" + buttonId +"]").parents('tr')
+                
+                var title = $("#edit-title")[0].value.trim();
+                var description = $("#edit-description")[0].value.trim();
+                console.log(title);
+                console.log(description);
+
+               if ($('#edit-title').attr('placeholder') == title 
+                && $('#edit-description').attr('placeholder') == description) {
+                console.log('no change');                
+              } else {
+                console.log('changed');                
+                doUpdateRow(tr, title, description);                
+              }
+
+              });
+
         });
 
     </script>
