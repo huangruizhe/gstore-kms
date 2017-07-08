@@ -72,8 +72,8 @@
                                         <h3 class="panel-title">知识元列表</h3>
                                     </div>
                                     <div class="col col-sm-6 text-right">
-                                        <button class="btn btn-info btn-sm btn-create" data-title="Delete" data-toggle="modal" data-target="#insert"><span class="glyphicon glyphicon-plus-sign"></span> 新建 </button>
-                                        <button class="btn btn-info btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> 筛选 </button>
+                                        <button class="btn btn-info btn-sm btn-create" data-title="Delete" data-toggle="modal" data-target="#insert"><span class="glyphicon glyphicon-plus-sign"></span> <span>新建</span> </button>
+                                        <button class="btn btn-info btn-sm btn-filter" id="my-btn-filter"><span class="glyphicon glyphicon-filter"></span> <span>筛选</span> </button>
                                     </div>
                                 </div>
                             </div>
@@ -82,13 +82,21 @@
                             <div class="panel-body">
                                 <table id="mytable" class="table table-bordered table-striped table-hover">
                                     <thead>
-                                        <td><strong>名称</strong></td>
-                                        <td><strong>简介</strong></td>
-                                        <td align="center"><strong>编辑</strong></td>
-                                        <td align="center"><strong>删除</strong></td>
+                                        <tr id="tr-input">
+                                            <td id="td-input1">名称</td>
+                                            <td id="td-input2">简介</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>名称</strong></td>
+                                            <td><strong>简介</strong></td>
+                                            <td align="center"><strong>编辑</strong></td>
+                                            <td align="center"><strong>删除</strong></td>
+                                        </tr>
                                     </thead>
 
-                                    <tbody id="mytb">
+                                    <tbody id="mytbody">
 
                                         <tr>
                                             <td>Mohsin1</td>
@@ -234,9 +242,9 @@
                             </div>
                             <!-- /. PANEL BODY  -->
 
-                            <div class="panel-footer">
+                            <!--<div class="panel-footer">
                                 <div class="row">
-                                    <!-- <div class="col col-xs-4">Page 1 of 5</div> -->
+                                    <div class="col col-xs-4">Page 1 of 5</div>
                                     <div class="col col-xs-12">
                                         <ul class="pagination hidden-xs pull-right">
                                             <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
@@ -249,8 +257,8 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /. PANEL BODY  -->
+                            </div>-->
+                            <!-- /. PANEL FOOTER  -->
 
                         </div>
                         <!-- /. PANEL TABLE  -->
@@ -334,7 +342,9 @@
                                     <div class="modal-body">
 
                                         <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> 即将删除这条知识元，确定吗？</div>
-                                        <div><p id="dp-title">null</p></div>
+                                        <div>
+                                            <p id="dp-title">null</p>
+                                        </div>
                                     </div>
 
                                     <div class="modal-footer ">
@@ -370,22 +380,47 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
             $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-        
-                $("#mytable #checkall").click(function () {
-                    if ($("#mytable #checkall").is(':checked')) {
-                        $("#mytable input[type=checkbox]").each(function () {
-                            $(this).prop("checked", true);
-                        });
 
-                    } else {
-                        $("#mytable input[type=checkbox]").each(function () {
-                            $(this).prop("checked", false);
-                        });
-                    }
+                $('#td-input1').html('<input type="text" placeholder="Search ' + $('#td-input1').text() + '" />');
+                $('#td-input2').html('<input type="text" placeholder="Search ' + $('#td-input2').text() + '" />');
+
+                $('#mytable').dataTable({
+                    "ordering": false,
+                    "searching": false,
                 });
 
-                $("[data-toggle=tooltip]").tooltip();
+                var dataTable = $('#mytable').DataTable();
+
+                $('input', '#td-input1').on('keyup change', function () {
+                    // if (that.search() !== this.value) {
+                    //     that
+                    //         .search(this.value)
+                    //         .draw();
+                    // }
+                });
+
+                $('input', '#td-input2').on('keyup change', function () {
+                    // if (that.search() !== this.value) {
+                    //     that
+                    //         .search(this.value)
+                    //         .draw();
+                    // }
+                });
+
+                // $("#mytable #checkall").click(function () {
+                //     if ($("#mytable #checkall").is(':checked')) {
+                //         $("#mytable input[type=checkbox]").each(function () {
+                //             $(this).prop("checked", true);
+                //         });
+
+                //     } else {
+                //         $("#mytable input[type=checkbox]").each(function () {
+                //             $(this).prop("checked", false);
+                //         });
+                //     }
+                // });
+
+                // $("[data-toggle=tooltip]").tooltip();
 
                 $("#delete").on("show.bs.modal", function (e) {
                     buttonId = $(e.relatedTarget).data("id");
@@ -415,7 +450,8 @@
                     var description = $("#insert-description")[0].value.trim();
 
                     if (title.length > 0) {
-                        doInsertRow($("#mytb"), title, description);
+                        doInsertRow($("#mytbody"), title, description);
+                        // $('#mytable').DataTable().draw
                     } else {
                         alert("知识元名称为空，插入失败");
                     }
@@ -448,6 +484,20 @@
                         doUpdateRow(tr, title, description);
                     }
 
+                });
+
+                $('#tr-input').hide();
+
+                $('#my-btn-filter').click(function () {
+                    $('#tr-input').toggle();
+                    
+                    var disp = $('#my-btn-filter span:last-child').text();
+                    if (disp == '筛选') {
+                        disp = '取消筛选';
+                    } else {
+                        disp = '筛选';
+                    }
+                    $('#my-btn-filter span:last-child').text(disp);
                 });
 
             });
