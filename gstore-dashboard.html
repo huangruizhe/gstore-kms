@@ -1,24 +1,27 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>控制面板 - 知识图谱管理系统 Powered by gStore</title>
-	<!-- Bootstrap Styles-->
+    <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
+    <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-     <!-- Morris Chart Styles-->
-   
-        <!-- Custom Styles-->
+    <!-- Morris Chart Styles-->
+
+    <!-- Custom Styles-->
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-     <!-- TABLE STYLES-->
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!-- TABLE STYLES-->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 </head>
+
 <body>
     <div id="wrapper">
+
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -32,6 +35,7 @@
 
         </nav>
         <!--/. NAV TOP  -->
+
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
@@ -45,97 +49,145 @@
             </div>
         </nav>
         <!-- /. NAV SIDE  -->
-        <div id="page-wrapper" >
+
+        <div id="page-wrapper">
             <div id="page-inner">
-<!--              <div class="row">
+                <!--              <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
                             控制面板 <small>Best form elements.</small>
                         </h1>
                     </div>
                 </div>  -->
-                 <!-- /. ROW  -->
-              <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            服务器
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div id="alert-server-success" class="alert alert-success">
+                            <strong>服务器设置成功!</strong>
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <form role="form">
+                        <div id="alert-server-fail" class="alert alert-danger">
+                            <strong>服务器设置失败!</strong> 请检查IP地址和端口号是否正确，服务器是否正常开启或端口是否已打开。
+                        </div>
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                服务器
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <!--<form role="form">-->
                                         <div class="form-group">
                                             <label>IP地址</label>
-                                            <input class="form-control" id="_ip_1" name="_ip_1" placeholder="localhost">
+                                            <input class="form-control" id="_ip_1" placeholder="localhost">
                                         </div>
                                         <div class="form-group">
                                             <label>端口号</label>
-                                            <input class="form-control" id="_port_1" name="_port_1" placeholder="9000">
+                                            <input class="form-control" id="_port_1" placeholder="9000">
                                         </div>
-                                        <button type="submit" class="btn btn-default" id="_server_confirm_button"">确认</button>
-                                    </form>
+                                        <button class="btn btn-default" id="server_confirm_button">确认</button>
+                                        <!--</form>-->
+                                    </div>
                                 </div>
-                                <!-- /.col-lg-6 (nested) -->
                             </div>
-                            <!-- /.row (nested) -->
                         </div>
-                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-                <div class="col-lg-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            数据集
+
+                    <div class="col-lg-12 ">
+                        <div id="alert-db-success" class="alert alert-success">
+                            <strong>数据集载入成功!</strong>
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <form role="form">
-                                        <div class="form-group">
+                        <div id="alert-db-fail" class="alert alert-danger">
+                            <strong>数据集载入失败!</strong> 请检查服务器是否正常开启或数据集是否存在。
+                        </div>
+
+                        <div class="panel panel-info ">
+                            <div class="panel-heading ">
+                                数据集
+                            </div>
+                            <div class="panel-body ">
+                                <div class="row ">
+                                    <div class="col-lg-12 ">
+                                        <!--<form role="form ">-->
+                                        <div class="form-group ">
                                             <label>数据集名称</label>
-                                            <input class="form-control" id="_db_name_1" name="_db_name_1" placeholder="db_name">
+                                            <input class="form-control " id="_db_name_1" placeholder="db_name ">
                                         </div>
-                                        <button type="submit" class="btn btn-default" id="load_button" onclick="load(_db_name_1.value)">载入</button>
-                                    </form>
+                                        <button class="btn btn-default " id="load_button">载入</button>
+                                        <!--</form>-->
+                                    </div>
                                 </div>
-                                <!-- /.col-lg-6 (nested) -->
                             </div>
-                            <!-- /.row (nested) -->
                         </div>
-                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
+
                 </div>
-                <!-- /.col-lg-12 -->
+                <!-- /. ROW  -->
+
+                <footer>
+                    <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
+                </footer>
             </div>
-            <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
-            </div>
-             <!-- /. PAGE INNER  -->
-            </div>
-         <!-- /. PAGE WRAPPER  -->
-     <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+        <!-- /. WRAPPER  -->
+        <!-- JS Scripts-->
+        <!-- jQuery Js -->
+        <script src="assets/js/jquery-1.10.2.js "></script>
+        <!-- Bootstrap Js -->
+        <script src="assets/js/bootstrap.min.js "></script>
+        <!-- Metis Menu Js -->
+        <script src="assets/js/jquery.metisMenu.js "></script>
+        <!-- DATA TABLE SCRIPTS -->
+        <script src="assets/js/dataTables/jquery.dataTables.js "></script>
+        <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
         <script>
             $(document).ready(function () {
-                $('#dataTables-example').dataTable();
+
+                var alertServerSucess = $('#alert-server-success'),
+                    alertServerFail = $('#alert-server-fail'),
+                    alertDbSucess = $('#alert-db-success'),
+                    alertDbFail = $('#alert-db-fail');
+
+                alertServerSucess.hide();
+                alertServerFail.hide();
+                alertDbSucess.hide();
+                alertDbFail.hide();
+
+                $('#server_confirm_button').click(function () {
+                    var condition = true;
+
+                    if (condition) {
+                        console.log("I am here");
+                        alertServerSucess.show();
+                        alertServerSucess.fadeOut(1000);
+                    } else {
+                        alertServerFail.show();
+                        alertServerFail.fadeOut(1000);
+                    }
+                });
+
+                $('#load_button').click(function () {
+                    var condition = true;
+
+                    if (condition) {
+                        alertDbSucess.show();
+                        alertDbSucess.fadeOut(1000);
+                    } else {
+                        alertDbFail.show();
+                        alertDbFail.fadeOut(1000);
+                    }
+                });
+
             });
-    </script>
-         <!-- Custom Js -->
-    <script src="assets/js/custom-scripts.js"></script>
-    <script src="assets/js/dataset.js"></script>
-    
-   
+        </script>
+        <!-- Custom Js -->
+        <script src="assets/js/custom-scripts.js "></script>
+        <script src="assets/js/dataset.js "></script>
+
+
 </body>
+
 </html>
