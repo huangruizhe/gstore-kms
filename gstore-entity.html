@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>graph - 知识图谱管理系统 Powered by gStore</title>
+    <!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!-- TABLE STYLES-->
+    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">gStore</a>
+            </div>
+
+        </nav>
+        <!--/. NAV TOP  -->
+
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a id="a-dash" href="gstore-dashboard.html"><i class="fa fa-fw fa-file"></i> 控制面板 </a>
+                    </li>
+                    <li>
+                        <a id="a-tb" href="gstore-table.html"><i class="fa fa-fw fa-file"></i> 列表视图 </a>
+                    </li>
+                    <li>
+                        <a id="a-gr" href="gstore-graph.html"><i class="fa fa-fw fa-file"></i> 图谱视图 </a>
+                    </li>
+                    <li>
+                        <a id="a-dt" href="gstore-entity.html" class="active-menu"><i class="fa fa-fw fa-file"></i> 知识元详情 </a>
+                    </li>
+                    <li>
+                        <a id="a-sp" href="gstore-sparql.html"><i class="fa fa-fw fa-file"></i> SPARQL查询 </a>
+                    </li>
+                    <li>
+                        <a id="a-hp" href="gstore-help.html"><i class="fa fa-fw fa-file"></i> 帮助 </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                           标题 <small>副标题</small>
+                        </h1>
+                    </div>
+                </div>
+
+                <footer>
+                    <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
+                </footer>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+        <!-- /. WRAPPER  -->
+        <!-- JS Scripts-->
+        <!-- jQuery Js -->
+        <script src="assets/js/jquery-1.10.2.js "></script>
+        <!-- Bootstrap Js -->
+        <script src="assets/js/bootstrap.min.js "></script>
+        <!-- Metis Menu Js -->
+        <script src="assets/js/jquery.metisMenu.js "></script>
+        <!-- DATA TABLE SCRIPTS -->
+        <script src="assets/js/dataTables/jquery.dataTables.js "></script>
+        <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
+        <!-- Custom Js -->
+        <script src="assets/js/gstore-util.js"></script>
+
+        <script>
+            $(document).ready(function () {
+
+                function setURL() {
+                    $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                }
+
+                var params = parseURL(document.URL);
+                if (Object.keys(params).length > 0) {
+                    global_ip = params["ip"];
+                    global_port = params["port"];
+                    global_dbname = params["db"];
+
+                    setURL();
+                }
+
+            });
+        </script>
+
+</body>
+
+</html>

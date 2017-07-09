@@ -45,6 +45,18 @@
                     <li>
                         <a id="a-tb" href="gstore-table.html" class="active-menu"><i class="fa fa-fw fa-file"></i> 列表视图 </a>
                     </li>
+                    <li>
+                        <a id="a-gr" href="gstore-graph.html"><i class="fa fa-fw fa-file"></i> 图谱视图 </a>
+                    </li>
+                    <li>
+                        <a id="a-dt" href="gstore-entity.html"><i class="fa fa-fw fa-file"></i> 知识元详情 </a>
+                    </li>
+                    <li>
+                        <a id="a-sp" href="gstore-sparql.html"><i class="fa fa-fw fa-file"></i> SPARQL查询 </a>
+                    </li>
+                    <li>
+                        <a id="a-hp" href="gstore-help.html"><i class="fa fa-fw fa-file"></i> 帮助 </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -388,9 +400,10 @@
                 function setURL() {
                     $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
                     $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-
-                    console.log($("#a-dash")[0].href);
-                    console.log($("#a-tb")[0].href);
+                    $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
                 }
 
                 var params = parseURL(document.URL);

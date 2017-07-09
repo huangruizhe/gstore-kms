@@ -3,6 +3,9 @@ function getRowHtml(title, description, uri) {
 
     var maxlen = 80;
 
+    title = randomString(7);
+    description = randomString(12);
+
     var rawHtml;
     if (description.length > maxlen) {
         var shortDescription = description.substring(0, maxlen) + " ...";
