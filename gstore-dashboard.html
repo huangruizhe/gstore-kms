@@ -40,10 +40,10 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li>
-                        <a href="gstore-dashboard.html" class="active-menu"><i class="fa fa-fw fa-file"></i> 控制面板 </a>
+                        <a id="a-dash" href="gstore-dashboard.html" class="active-menu"><i class="fa fa-fw fa-file"></i> 控制面板 </a>
                     </li>
                     <li>
-                        <a href="gstore-table.html"><i class="fa fa-fw fa-file"></i> 列表视图 </a>
+                        <a id="a-tb" href="gstore-table.html"><i class="fa fa-fw fa-file"></i> 列表视图 </a>
                     </li>
                 </ul>
             </div>
@@ -150,6 +150,24 @@
         <script>
             $(document).ready(function () {
 
+                function setURL() {
+                    $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                }
+
+                var params = parseURL(document.URL);
+                if (Object.keys(params).length > 0) {
+                    global_ip = params["ip"];
+                    global_port = params["port"];
+                    global_dbname = params["db"];
+
+                    setURL();
+                }
+
+                $("#_ip_1").attr('placeholder', global_ip);
+                $("#_port_1").attr('placeholder', global_port);
+                $("#_db_name_1").attr('placeholder', global_dbname);
+
                 var alertServerSucess = $('#alert-server-success'),
                     alertServerFail = $('#alert-server-fail'),
                     alertDbSucess = $('#alert-db-success'),
@@ -179,12 +197,15 @@
                     // console.log("port=" + port);
 
                     testServer(ip, port, function (data, status) {
+                        console.log("Status: " + status + "\nData: " + data);
                         if (status == 'success') {
                             alertServerSucess.show();
                             alertServerSucess.fadeOut(2000);
 
                             global_ip = ip;
                             global_port = port;
+
+                            setURL();
                         }
                     }, function () {
                         alertServerFail.show();
@@ -197,22 +218,28 @@
                     var dbname = dbObj[0].value.trim();
 
                     if (dbname.length == 0) {
-                        alertDbFail.show();
-                        alertDbFail.fadeOut(4000);
-                        return;
+                        dbname = dbObj.attr('placeholder');
+                        // alertDbFail.show();
+                        // alertDbFail.fadeOut(4000);
+                        // return;
                     }
 
                     loadDB(dbname, function (data, status) {
                         if (data == 'Database loaded successfully.') {
                             alertDbSucess.show();
                             alertDbSucess.fadeOut(2000);
+
+                            global_dbname = dbname;
+                            dbObj[0].value = dbname;
+
+                            setURL();
                         } else {
                             alertDbFail.show();
                             alertDbFail.fadeOut(4000);
                         }
-                    }, function() {
+                    }, function () {
                         alertDbFail.show();
-                        alertDbFail.fadeOut(4000);                        
+                        alertDbFail.fadeOut(4000);
                     });
                 });
 

@@ -1,7 +1,3 @@
-var global_ip = "localhost";
-var global_port = "9000";
-var global_dbname = "null";
-
 function testServer (ip, port, on_success, on_fail) {
     // https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call
     // https://api.jquery.com/jQuery.get/
