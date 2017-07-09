@@ -98,7 +98,7 @@
 
                                     <tbody id="mytbody">
 
-                                        <tr>
+                                        <!--<tr>
                                             <td>Mohsin1</td>
                                             <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
                                             <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
@@ -233,7 +233,7 @@
                                                     data-target="#edit" data-id="15"><span class="glyphicon glyphicon-pencil"></span></button></td>
                                             <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
                                                     data-target="#delete" data-id="15"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
+                                        </tr>-->
 
                                     </tbody>
 
@@ -402,17 +402,29 @@
                     setURL();
                 }
 
+                loadAllData(100, function (data, status) {
+                    console.log("Status: " + status + "\nData: " + data.length);
+                    var rs = parseAllData(data);
+                    var mbody = $("#mytbody");
+                    for (var i in rs) {
+                        mbody.append(getRowHtml(rs[i][1], rs[i][2], rs[i][0]));
+                    }
+
+                    $('#mytable').dataTable({
+                        "ordering": false,
+                        "searching": false,
+                    });
+
+                }, function () {
+                    console.log("here failed");
+                });
+
                 $("#p-db-name").text(global_dbname);
 
                 $('#td-input1').html('<input type="text" class="form-control" placeholder="Search ' + $('#td-input1').text() + '" />');
                 $('#td-input2').html('<input type="text" class="form-control" placeholder="Search ' + $('#td-input2').text() + '" />');
 
-                $('#mytable').dataTable({
-                    "ordering": false,
-                    "searching": false,
-                });
-
-                var dataTable = $('#mytable').DataTable();
+                // var dataTable = $('#mytable').DataTable();
 
                 $('input', '#td-input1').on('keyup change', function () {
                     // if (that.search() !== this.value) {
