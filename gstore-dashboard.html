@@ -99,7 +99,7 @@
                             <strong>数据集载入成功!</strong>
                         </div>
                         <div id="alert-db-fail" class="alert alert-danger">
-                            <strong>数据集载入失败!</strong> 请检查服务器是否正常开启或数据集是否存在。
+                            <strong>数据集载入失败!</strong> 请检查服务器是否正常开启，或数据集名称是否正确。
                         </div>
 
                         <div class="panel panel-info ">
@@ -143,6 +143,10 @@
         <!-- DATA TABLE SCRIPTS -->
         <script src="assets/js/dataTables/jquery.dataTables.js "></script>
         <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
+        <!-- Custom Js -->
+        <script src="assets/js/gstore-util.js"></script>
+        <script src="assets/js/gstore-dashboard.js"></script>
+
         <script>
             $(document).ready(function () {
 
@@ -157,36 +161,63 @@
                 alertDbFail.hide();
 
                 $('#server_confirm_button').click(function () {
-                    var condition = true;
+                    var ipObj = $("#_ip_1");
+                    var portObj = $("#_port_1");
+                    var ip = ipObj[0].value.trim();
+                    var port = portObj[0].value.trim();
 
-                    if (condition) {
-                        console.log("I am here");
-                        alertServerSucess.show();
-                        alertServerSucess.fadeOut(1000);
-                    } else {
-                        alertServerFail.show();
-                        alertServerFail.fadeOut(1000);
+                    if (ip.length == 0) {
+                        ipObj[0].value = ipObj.attr('placeholder');
+                        ip = ipObj[0].value.trim();
                     }
+                    if (port.length == 0) {
+                        portObj[0].value = portObj.attr('placeholder');
+                        port = portObj[0].value.trim();
+                    }
+
+                    // console.log("ip=" + ip);
+                    // console.log("port=" + port);
+
+                    testServer(ip, port, function (data, status) {
+                        if (status == 'success') {
+                            alertServerSucess.show();
+                            alertServerSucess.fadeOut(2000);
+
+                            global_ip = ip;
+                            global_port = port;
+                        }
+                    }, function () {
+                        alertServerFail.show();
+                        alertServerFail.fadeOut(4000);
+                    });
                 });
 
                 $('#load_button').click(function () {
-                    var condition = true;
+                    var dbObj = $("#_db_name_1");
+                    var dbname = dbObj[0].value.trim();
 
-                    if (condition) {
-                        alertDbSucess.show();
-                        alertDbSucess.fadeOut(1000);
-                    } else {
+                    if (dbname.length == 0) {
                         alertDbFail.show();
-                        alertDbFail.fadeOut(1000);
+                        alertDbFail.fadeOut(4000);
+                        return;
                     }
+
+                    loadDB(dbname, function (data, status) {
+                        if (data == 'Database loaded successfully.') {
+                            alertDbSucess.show();
+                            alertDbSucess.fadeOut(2000);
+                        } else {
+                            alertDbFail.show();
+                            alertDbFail.fadeOut(4000);
+                        }
+                    }, function() {
+                        alertDbFail.show();
+                        alertDbFail.fadeOut(4000);                        
+                    });
                 });
 
             });
         </script>
-        <!-- Custom Js -->
-        <script src="assets/js/custom-scripts.js "></script>
-        <script src="assets/js/dataset.js "></script>
-
 
 </body>
 
