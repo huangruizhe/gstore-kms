@@ -3,8 +3,8 @@ function getRowHtml(title, description, uri) {
 
     var maxlen = 80;
 
-    title = randomString(7);
-    description = randomString(12);
+    // title = randomString(7);
+    // description = randomString(12);
 
     var rawHtml;
     if (description.length > maxlen) {
@@ -23,6 +23,9 @@ function doInsertRow(tb, title, description) {
     // console.log(title);
     // console.log(description);
 
+    // This would have problem, because it does not change the dataTable internally
+    // TODO: use dataTable built-in row.add() function
+
     var tr = document.createElement('tr');
     tr.innerHTML = rowHtml;
 
@@ -30,6 +33,9 @@ function doInsertRow(tb, title, description) {
 }
 
 function doDelRow(tr) {
+    // This would have problem, because it does not change the dataTable internally
+    // TODO: use dataTable built-in row.remove() function
+
     tr.fadeOut('slow', () => tr.remove());
 }
 
@@ -42,6 +48,7 @@ var buttonId = undefined;
 
 function loadAllData(n, on_success, on_fail) {
     var sparql = "select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. } limit " + n;
+    console.log(sparql);
 
     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
     $.get(
@@ -65,3 +72,24 @@ function parseAllData (data) {
     return result;
 }
 
+function searchData (n, title1, intro1, on_success, on_fail) {
+    var clause1 = "";
+    var clause2 = "";
+    if (title1.length > 0) {
+        clause1 = "FILTER regex(?name, \"" + title1 + "\") ";
+    }
+    if (intro1.length > 0) {
+        clause2 = "FILTER regex(?intro, \"" + intro1 + "\") ";
+    }
+
+    var sparql = `select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. ${clause1} ${clause2}} limit ${n}`;
+    console.log(sparql);
+
+    var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
+    $.get(
+        encodeURI(url),
+        on_success
+    ).fail(function () {
+        on_fail();
+    });
+}

@@ -95,10 +95,9 @@
                                 <table id="mytable" class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr id="tr-input">
-                                            <td id="td-input1">名称</td>
-                                            <td id="td-input2">简介</td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><input id="td-input1" type="text" class="form-control" placeholder="筛选 名称" /></td>
+                                            <td><input id="td-input2" type="text" class="form-control" placeholder="筛选 简介" /></td>
+                                            <td colspan="2"><a class="btn btn-default" id="search-submit"><span class="glyphicon glyphicon-search"></span> 搜索</a></td>
                                         </tr>
                                         <tr>
                                             <td><strong>名称</strong></td>
@@ -416,7 +415,7 @@
                 }
 
                 loadAllData(100, function (data, status) {
-                    console.log("Status: " + status + "\nData: " + data.length);
+                    console.log("Status: " + status + "\nData-length: " + data.length);
                     var rs = parseAllData(data);
                     var mbody = $("#mytbody");
                     for (var i in rs) {
@@ -429,31 +428,28 @@
                     });
 
                 }, function () {
-                    console.log("here failed");
+                    console.log("load all data failed");
                 });
 
                 $("#p-db-name").text(global_dbname);
 
-                $('#td-input1').html('<input type="text" class="form-control" placeholder="Search ' + $('#td-input1').text() + '" />');
-                $('#td-input2').html('<input type="text" class="form-control" placeholder="Search ' + $('#td-input2').text() + '" />');
-
                 // var dataTable = $('#mytable').DataTable();
 
-                $('input', '#td-input1').on('keyup change', function () {
-                    // if (that.search() !== this.value) {
-                    //     that
-                    //         .search(this.value)
-                    //         .draw();
-                    // }
-                });
+                // $('input', '#td-input1').on('keyup change', function () {
+                // if (that.search() !== this.value) {
+                //     that
+                //         .search(this.value)
+                //         .draw();
+                // }
+                // });
 
-                $('input', '#td-input2').on('keyup change', function () {
-                    // if (that.search() !== this.value) {
-                    //     that
-                    //         .search(this.value)
-                    //         .draw();
-                    // }
-                });
+                // $('input', '#td-input2').on('keyup change', function () {
+                // if (that.search() !== this.value) {
+                //     that
+                //         .search(this.value)
+                //         .draw();
+                // }
+                // });
 
                 // $("#mytable #checkall").click(function () {
                 //     if ($("#mytable #checkall").is(':checked')) {
@@ -546,6 +542,34 @@
                         disp = '筛选';
                     }
                     $('#my-btn-filter span:last-child').text(disp);
+                });
+
+                $('#search-submit').click(function () {
+                    var title = $('#td-input1')[0].value.trim();
+                    var intro = $('#td-input2')[0].value.trim();
+
+                    if (title.length == 0 && intro.length == 0) {
+                        return;
+                    }
+
+                    searchData(100, title, intro, function (data, status) {
+                        console.log("Status: " + status + "\nData-length: " + data.length);
+                        var rs = parseAllData(data);
+
+                        var mytb = $('#mytable').DataTable();
+                        mytb.clear();
+
+                        var mbody = $("#mytbody");
+                        mbody.empty();
+                        for (var i in rs) {
+                            mbody.append(getRowHtml(rs[i][1], rs[i][2], rs[i][0]));
+                        }
+
+                        mytb.draw();
+
+                    }, function () {
+                        console.log("search data failed");
+                    });
                 });
 
             });
