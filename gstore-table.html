@@ -74,6 +74,28 @@
                 </div>
                 <!-- /. ROW  -->
 
+                <div class="col-lg-12">
+                    <div id="alert-add-success" class="alert alert-success">
+                        <strong>知识元添加成功</strong>
+                    </div>
+                    <div id="alert-add-fail" class="alert alert-danger">
+                        <strong>知识元添加失败</strong>
+                    </div>
+                    <div id="alert-del-success" class="alert alert-success">
+                        <strong>知识元删除成功</strong>
+                    </div>
+                    <div id="alert-del-fail" class="alert alert-danger">
+                        <strong>知识元删除失败</strong>
+                    </div>
+                    <div id="alert-upd-success" class="alert alert-success">
+                        <strong>知识元更新成功</strong>
+                    </div>
+                    <div id="alert-upd-fail" class="alert alert-danger">
+                        <strong>知识元更新失败</strong>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="panel panel-default panel-table">
@@ -104,149 +126,11 @@
                                             <td><strong>简介</strong></td>
                                             <td align="center"><strong>编辑</strong></td>
                                             <td align="center"><strong>删除</strong></td>
+                                            <td><strong>Time</strong></td>
                                         </tr>
                                     </thead>
 
-                                    <tbody id="mytbody">
-
-                                        <!--<tr>
-                                            <td>Mohsin1</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="1"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="1"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin2</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="2"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="2"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <td>Irshad3</td>
-                                            <td>isometric.mohsin@gmail.com</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="3"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="3"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin4</td>
-                                            <td>+923335586757</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="4"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="4"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <td>Mohsin5</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="5"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="5"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin6</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="6"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="6"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin7</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="7"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="7"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin8</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="8"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="8"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin9</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="9"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="9"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin10</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="10"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="10"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin11</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="11"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="11"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin12</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="12"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="12"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin13</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="13"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="13"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin14</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="14"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="14"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mohsin15</td>
-                                            <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
-                                            <td align="center"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
-                                                    data-target="#edit" data-id="15"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td align="center"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                                    data-target="#delete" data-id="15"><span class="glyphicon glyphicon-trash"></span></button></td>
-                                        </tr>-->
-
-                                    </tbody>
+                                    <tbody id="mytbody"> </tbody>
 
                                 </table>
 
@@ -396,6 +280,13 @@
         <script>
             $(document).ready(function () {
 
+                $('#alert-add-success').hide();
+                $('#alert-add-fail').hide();
+                $('#alert-del-success').hide();
+                $('#alert-del-fail').hide();
+                $('#alert-upd-success').hide();
+                $('#alert-upd-fail').hide();
+
                 function setURL() {
                     $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
                     $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
@@ -418,13 +309,22 @@
                     console.log("Status: " + status + "\nData-length: " + data.length);
                     var rs = parseAllData(data);
                     var mbody = $("#mytbody");
+                    var timeStamp = getTimeStamp();
                     for (var i in rs) {
-                        mbody.append(getRowHtml(rs[i][1], rs[i][2], rs[i][0]));
+                        mbody.append(getRowHtml(rs[i][1], rs[i][2], rs[i][0], timeStamp));
                     }
 
                     $('#mytable').dataTable({
-                        "ordering": false,
+                        // "ordering": false,
                         "searching": false,
+                        "columnDefs": [
+                            {
+                                "targets": [4],
+                                "visible": false,
+                                "searchable": false
+                            }
+                        ],
+                        "order": [[4, "desc"]]
                     });
 
                 }, function () {
@@ -494,10 +394,10 @@
                     var description = $("#insert-description")[0].value.trim();
 
                     if (title.length > 0) {
-                        doInsertRow($("#mytbody"), title, description);
+                        doInsertRow($('#mytable').DataTable(), title, description);
                         // $('#mytable').DataTable().draw
                     } else {
-                        alert("知识元名称为空，插入失败");
+                        alert("知识元名称为空");
                     }
 
                     $("#insert-title")[0].value = "";

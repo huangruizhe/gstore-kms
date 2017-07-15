@@ -1,4 +1,4 @@
-function getRowHtml(title, description, uri, timeStamp) {
+function getRowHtml(title, description, uri) {
     var dataId = randomString(5);
 
     var maxlen = 80;
@@ -9,16 +9,16 @@ function getRowHtml(title, description, uri, timeStamp) {
     var rawHtml;
     if (description.length > maxlen) {
         var shortDescription = description.substring(0, maxlen) + " ...";
-        rowHtml = `<tr> <td data-uri='${uri}'>${title}</td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td> </tr>`;
+        rowHtml = `<tr> <td data-uri='${uri}'>${title}</td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>10000</td> </tr>`;
     } else {
-        rowHtml = `<tr> <td data-uri='${uri}'>${title}</td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td> </tr>`;
+        rowHtml = `<tr> <td data-uri='${uri}'>${title}</td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>10000</td> </tr>`;
     }
     return rowHtml;
 }
 
 function doInsertRow(tb, title, description) {
     var uri = "http://www.founder/" + randomString(5);
-    var rowHtml = getRowHtml(title, description, uri, getTimeStamp());
+    var rowHtml = getRowHtml(title, description, uri);
 
     // console.log(title);
     // console.log(description);
@@ -30,7 +30,14 @@ function doInsertRow(tb, title, description) {
     tr.innerHTML = rowHtml;
 
     // tb.prepend(tr);
-    tb.row.add(tr).draw();
+
+    // var rowNode = tb.row.add(tr).draw().node();
+    // $(rowNode)
+    //     .css('color', 'red')
+    //     .animate({ color: 'black' });
+
+    tb.row.add(tr).draw(false);
+    tb.order([4, 'desc']).draw();
 }
 
 function doDelRow(tr) {

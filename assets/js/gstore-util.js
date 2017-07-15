@@ -60,3 +60,7 @@ function parseURL (url) {
     
     return obj;
 }
+
+function getTimeStamp () {
+    return new Date().getTime();
+}
