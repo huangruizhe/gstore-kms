@@ -52,20 +52,39 @@ function doDelRow(table, tr, on_success, on_fail) {
 
     uri = tr[0].firstElementChild.getAttribute("data-uri");
     gstore.deleteTableData(
-        uri, 
+        uri,
         function () {
-            tr.fadeOut('slow', () => {table.row(tr[0]).remove().draw();});
+            tr.fadeOut('slow', () => { table.row(tr[0]).remove().draw(); });
             on_success();
-        }, 
+        },
         function () {
             on_fail();
         }
     );
 }
 
-function doUpdateRow(tr, title, description) {
-    tr.find('td:first-child').text(title);
-    tr.find('td:nth-child(2)').text(description);
+function doUpdateRow(table, tr, title, description, on_success, on_fail) {
+    // tr.find('td:first-child').text(title);
+    // tr.find('td:nth-child(2)').text(description);
+
+    uri = tr[0].firstElementChild.getAttribute("data-uri");
+    gstore.updateTableData(
+        uri,
+        title,
+        description,
+        function () {
+            var rowObj = table.row(tr[0]).data();
+            rowObj[0] = title;
+            rowObj[1] = description;
+
+            table.row(tr[0]).data(rowObj).draw();
+
+            on_success();
+        },
+        function () {
+            on_fail();
+        }
+    );
 }
 
 var buttonId = undefined;

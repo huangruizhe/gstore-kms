@@ -74,24 +74,26 @@
                 </div>
                 <!-- /. ROW  -->
 
-                <div class="col-lg-12">
-                    <div id="alert-add-success" class="alert alert-success">
-                        <strong>知识元添加成功</strong>
-                    </div>
-                    <div id="alert-add-fail" class="alert alert-danger">
-                        <strong>知识元添加失败</strong>
-                    </div>
-                    <div id="alert-del-success" class="alert alert-success">
-                        <strong>知识元删除成功</strong>
-                    </div>
-                    <div id="alert-del-fail" class="alert alert-danger">
-                        <strong>知识元删除失败</strong>
-                    </div>
-                    <div id="alert-upd-success" class="alert alert-success">
-                        <strong>知识元更新成功</strong>
-                    </div>
-                    <div id="alert-upd-fail" class="alert alert-danger">
-                        <strong>知识元更新失败</strong>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="alert-add-success" class="alert alert-success">
+                            <strong>知识元添加成功</strong>
+                        </div>
+                        <div id="alert-add-fail" class="alert alert-danger">
+                            <strong>知识元添加失败</strong>
+                        </div>
+                        <div id="alert-del-success" class="alert alert-success">
+                            <strong>知识元删除成功</strong>
+                        </div>
+                        <div id="alert-del-fail" class="alert alert-danger">
+                            <strong>知识元删除失败</strong>
+                        </div>
+                        <div id="alert-upd-success" class="alert alert-success">
+                            <strong>知识元更新成功</strong>
+                        </div>
+                        <div id="alert-upd-fail" class="alert alert-danger">
+                            <strong>知识元更新失败</strong>
+                        </div>
                     </div>
                 </div>
 
@@ -330,12 +332,16 @@
                 var table = $('#mytable').DataTable();
 
                 // initialize table data
-                loadTable(
-                    table,
-                    $('#td-input1')[0].value.trim(),
-                    $('#td-input2')[0].value.trim(),
-                    100
-                );
+                if (global_dbname == "null") {
+                    alert("请先打开服务器(bin/ghttp)，并在\"控制面板\"中配置服务器和数据集参数");
+                } else {
+                    loadTable(
+                        table,
+                        $('#td-input1')[0].value.trim(),
+                        $('#td-input2')[0].value.trim(),
+                        100
+                    );
+                }
 
                 // initialize dataset name
                 $("#p-db-name").text(global_dbname);
@@ -400,7 +406,6 @@
                     var title = $("#insert-title")[0].value.trim();
                     var description = $("#insert-description")[0].value.trim();
 
-
                     doInsertRow(
                         $('#mytable').DataTable(),
                         title,
@@ -451,7 +456,22 @@
                         // console.log('no change');                
                     } else {
                         // console.log('changed');                
-                        doUpdateRow(tr, title, description);
+                        doUpdateRow(
+                            $('#mytable').DataTable(),
+                            tr,
+                            title,
+                            description,
+                            function () {
+                                var alertSuccess = $('#alert-upd-success');
+                                alertSuccess.show();
+                                alertSuccess.fadeOut(2000);
+                            },
+                            function () {
+                                var alertSuccess = $('#alert-upd-success');
+                                alertSuccess.show();
+                                alertSuccess.fadeOut(2000);
+                            }
+                        );
                     }
 
                 });

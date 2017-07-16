@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>graph - 知识图谱管理系统 Powered by gStore</title>
+    <title>SPARQL查询 - 知识图谱管理系统 Powered by gStore</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
@@ -67,55 +67,186 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                           标题 <small>副标题</small>
+                            SPARQL查询
+                            <!--<small>副标题</small>-->
                         </h1>
                     </div>
                 </div>
 
-                <footer>
-                    <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
-                </footer>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col col-sm-6">
+                                        <label>SPARQL</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <textarea class="form-control" id="sparql-text-area" rows="5" placeholder="select * where {?s ?p ?o.} limit 40"></textarea>
+                            </div>
+                            <div class="panel-footer">
+                                <button id="submit-btn" class="btn btn-default">提交</button>
+                                <button id="reset-btn" class="btn btn-default">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col col-sm-6">
+                                        <label>查询结果：</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="query-ans"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col col-sm-6">
+                                        <label>服务器返回结果：</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="alert alert-warning alert-dismissible fade in" style="margin: 20px auto; height: 400px; overflow: auto" id="response">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer>
+                        <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
+                    </footer>
+                </div>
+                <!-- /. PAGE INNER  -->
             </div>
-            <!-- /. PAGE INNER  -->
-        </div>
-        <!-- /. PAGE WRAPPER  -->
-        <!-- /. WRAPPER  -->
-        <!-- JS Scripts-->
-        <!-- jQuery Js -->
-        <script src="assets/js/jquery-1.10.2.js "></script>
-        <!-- Bootstrap Js -->
-        <script src="assets/js/bootstrap.min.js "></script>
-        <!-- Metis Menu Js -->
-        <script src="assets/js/jquery.metisMenu.js "></script>
-        <!-- DATA TABLE SCRIPTS -->
-        <script src="assets/js/dataTables/jquery.dataTables.js "></script>
-        <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
-        <!-- Custom Js -->
-        <script src="assets/js/gstore-util.js"></script>
+            <!-- /. PAGE WRAPPER  -->
+            <!-- /. WRAPPER  -->
+            <!-- JS Scripts-->
+            <!-- jQuery Js -->
+            <script src="assets/js/jquery-1.10.2.js "></script>
+            <!-- Bootstrap Js -->
+            <script src="assets/js/bootstrap.min.js "></script>
+            <!-- Metis Menu Js -->
+            <script src="assets/js/jquery.metisMenu.js "></script>
+            <!-- DATA TABLE SCRIPTS -->
+            <script src="assets/js/dataTables/jquery.dataTables.js "></script>
+            <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
+            <!-- Custom Js -->
+            <script src="assets/js/gstore-util.js"></script>
+            <script src="assets/js/gstore-gstore.js"></script>
 
-        <script>
-            $(document).ready(function () {
+            <script>
+                function parseJsonData(data) {
+                    var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+                    var thead = obj["head"]["vars"];
+                    var resultset = obj["results"]["bindings"].map(function (r) {
+                        return thead.map(function (x) {
+                            if (r[x] == undefined) {
+                                return "";
+                            } else {
+                                return r[x]["value"];
+                            }
+                        })
+                    });
 
-                function setURL() {
-                    $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    return [thead, resultset];
                 }
 
-                var params = parseURL(document.URL);
-                if (Object.keys(params).length > 0) {
-                    global_ip = params["ip"];
-                    global_port = params["port"];
-                    global_dbname = params["db"];
+                $(document).ready(function () {
 
-                    setURL();
-                }
+                    function setURL() {
+                        $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                        $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                        $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                        $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                        $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                        $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
+                    }
 
-            });
-        </script>
+                    var params = parseURL(document.URL);
+                    if (Object.keys(params).length > 0) {
+                        global_ip = params["ip"];
+                        global_port = params["port"];
+                        global_dbname = params["db"];
+
+                        setURL();
+                    }
+
+                    $("#reset-btn").click(function () {
+                        $("#sparql-text-area").val("");
+                        $("#sparql-text-area").attr("placeholder", "");
+                    });
+
+                    $("#response").hide();
+
+                    $("#submit-btn").click(function () {
+                        var sparql = $("#sparql-text-area").val().trim();
+
+                        if (sparql.length == 0) {
+                            sparql = $("#sparql-text-area").attr('placeholder');
+                            $("#sparql-text-area").val(sparql);
+                        }
+
+                        if (sparql.length == 0) {
+                            $("#sparql-text-area").attr("placeholder", "select * where {?s ?p ?o.} limit 40");
+                            return;
+                        }
+
+                        gstore.query(
+                            sparql,
+                            function (data, status) {
+
+                                var table = $('#rs-table');
+                                if (table.length > 0) {
+                                    try {
+                                        table.DataTable().clear().draw();
+                                    } catch (error) {
+                                        console.log("no datatable exists yet");
+                                    }
+                                }
+
+                                $("#query-ans").empty();
+
+                                var rs = parseJsonData(data);
+                                var new_thead = "<thead><tr id=\"tr-input\">" + rs[0].map((x) => ("<th>" + x + "</th>")).join("") + "</tr></thead>";
+                                var new_tbody = "<tbody>" + rs[1].map(
+                                    (r) => ("<tr>" + r.map((c) => ("<td>" + c + "</td>")).join("") + "</tr>")
+                                ).join("") + "</tbody>";
+                                var new_table = "<table id=\"rs-table\" class=\"table table-bordered table-striped table-hover\">\n" + new_thead + "\n" + new_tbody + "\n</table>"
+
+                                var table = $(new_table);
+                                $("#query-ans").append(table);
+
+                                $("#rs-table").dataTable();
+
+                                $("#response").empty();
+                                var pstatus = $('<p></p>').text("status: " + status);
+                                var pdata = $('<p></p>').text("data: " + data);
+                                $("#response").append(pstatus).append(pdata);
+                                $("#response").scrollTop($("#response").height());
+                                $("#response").show();
+                            },
+                            function () { }
+                        );
+                    });
+
+                });
+            </script>
 
 </body>
 
