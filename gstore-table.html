@@ -276,61 +276,68 @@
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
         <script src="assets/js/gstore-table.js"></script>
+        <script src="assets/js/gstore-gstore.js"></script>
 
         <script>
             $(document).ready(function () {
 
-                $('#alert-add-success').hide();
-                $('#alert-add-fail').hide();
-                $('#alert-del-success').hide();
-                $('#alert-del-fail').hide();
-                $('#alert-upd-success').hide();
-                $('#alert-upd-fail').hide();
+                // hide alerts
+                [
+                    '#alert-add-success',
+                    '#alert-add-fail',
+                    '#alert-del-success',
+                    '#alert-del-fail',
+                    '#alert-upd-success',
+                    '#alert-upd-fail'
+                ].map(e => $(e).hide());
 
-                function setURL() {
-                    $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                }
-
+                // parse urls
                 var params = parseURL(document.URL);
                 if (Object.keys(params).length > 0) {
                     global_ip = params["ip"];
                     global_port = params["port"];
                     global_dbname = params["db"];
 
-                    setURL();
+                    // set urls
+                    [
+                        "#a-dash",
+                        "#a-tb",
+                        "#a-gr",
+                        "#a-dt",
+                        "#a-sp",
+                        "#a-hp"
+                    ].map(e => $(e)[0].href = getURL($(e)[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname }));
                 }
 
-                loadAllData(100, function (data, status) {
-                    console.log("Status: " + status + "\nData-length: " + data.length);
-                    var rs = parseAllData(data);
-                    var mbody = $("#mytbody");
-                    var timeStamp = getTimeStamp();
-                    for (var i in rs) {
-                        mbody.append(getRowHtml(rs[i][1], rs[i][2], rs[i][0], timeStamp));
-                    }
-
-                    $('#mytable').dataTable({
-                        // "ordering": false,
-                        "searching": false,
-                        "columnDefs": [
-                            {
-                                "targets": [4],
-                                "visible": false,
-                                "searchable": false
-                            }
-                        ],
-                        "order": [[4, "desc"]]
-                    });
-
-                }, function () {
-                    console.log("load all data failed");
+                // initialize datatable object
+                $('#mytable').dataTable({
+                    // "ordering": false,
+                    "searching": false,
+                    "columnDefs": [
+                        { "width": "6%", "targets": 0 },
+                        { "width": "80%", "targets": 1 },
+                        { "width": "6%", "targets": 2 },
+                        { "width": "6%", "targets": 3 },
+                        {
+                            "targets": [4],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[4, "desc"]]
                 });
 
+                var table = $('#mytable').DataTable();
+
+                // initialize table data
+                loadTable(
+                    table,
+                    $('#td-input1')[0].value.trim(),
+                    $('#td-input2')[0].value.trim(),
+                    100
+                );
+
+                // initialize dataset name
                 $("#p-db-name").text(global_dbname);
 
                 // var dataTable = $('#mytable').DataTable();
@@ -393,23 +400,42 @@
                     var title = $("#insert-title")[0].value.trim();
                     var description = $("#insert-description")[0].value.trim();
 
-                    if (title.length > 0) {
-                        doInsertRow($('#mytable').DataTable(), title, description);
-                        // $('#mytable').DataTable().draw
-                    } else {
-                        alert("知识元名称为空");
-                    }
+
+                    doInsertRow(
+                        $('#mytable').DataTable(),
+                        title,
+                        description,
+                        function () {
+                            var alertSuccess = $('#alert-add-success');
+                            alertSuccess.show();
+                            alertSuccess.fadeOut(2000);
+                        },
+                        function () {
+                            var alertFail = $('#alert-add-fail');
+                            alertFail.show();
+                            alertFail.fadeOut(4000);
+                        });
 
                     $("#insert-title")[0].value = "";
                     $("#insert-description")[0].value = "";
                 });
 
                 $("#confirm-delete").click(function () {
-                    //console.log("hello");
-                    //console.log(buttonId);
                     var tr = $("#mytable tr td button.btn-danger[data-id=" + buttonId + "]").parents('tr');
-                    //console.log(tr.html());
-                    doDelRow(tr);
+                    doDelRow(
+                        $('#mytable').DataTable(),
+                        tr,
+                        function () {
+                            var alertSuccess = $('#alert-del-success');
+                            alertSuccess.show();
+                            alertSuccess.fadeOut(2000);
+                        },
+                        function () {
+                            var alertFail = $('#alert-del-fail');
+                            alertFail.show();
+                            alertFail.fadeOut(4000);
+                        },
+                    );
                 });
 
                 $("#confirm-update").click(function () {

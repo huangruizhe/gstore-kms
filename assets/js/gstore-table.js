@@ -1,43 +1,66 @@
-function getRowHtml(title, description, uri, timeStamp) {
+function getRowTr(title, description, uri, timeStamp) {
     var dataId = randomString(5);
-
-    var maxlen = 80;
+    var maxlen = 70;
 
     // title = randomString(7);
     // description = randomString(12);
 
-    var rawHtml;
+    var innerHtml;
     if (description.length > maxlen) {
         var shortDescription = description.substring(0, maxlen) + " ...";
-        rowHtml = `<tr> <td data-uri='${uri}'>${title}</td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td> </tr>`;
+        innerHtml = `<td data-uri='${uri}'>${title}</td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
     } else {
-        rowHtml = `<tr> <td data-uri='${uri}'>${title}</td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td> </tr>`;
+        innerHtml = `<td data-uri='${uri}'>${title}</td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
     }
-    return rowHtml;
+
+    var tr = document.createElement('tr');
+    tr.innerHTML = innerHtml;
+
+    return tr;
 }
 
-function doInsertRow(tb, title, description) {
+function doInsertRow(table, title, description, on_sucess, on_fail) {
+    if (title.length == 0) {
+        alert("知识元名称为空");
+        on_fail();
+        return;
+    }
+
     var uri = "http://www.founder/" + randomString(5);
-    var rowHtml = getRowHtml(title, description, uri, getTimeStamp());
+    var tr = getRowTr(title, description, uri, getTimeStamp());
 
     // console.log(title);
     // console.log(description);
 
-    // This would have problem, because it does not change the dataTable internally
-    // TODO: use dataTable built-in row.add() function
-
-    var tr = document.createElement('tr');
-    tr.innerHTML = rowHtml;
-
-    // tb.prepend(tr);
-    tb.row.add(tr).draw();
+    gstore.insertTableData(
+        uri,
+        title,
+        description,
+        function () {
+            table.row.add(tr).draw();
+            on_sucess();
+        },
+        function () {
+            on_fail();
+        }
+    );
 }
 
-function doDelRow(tr) {
+function doDelRow(table, tr, on_success, on_fail) {
     // This would have problem, because it does not change the dataTable internally
     // TODO: use dataTable built-in row.remove() function
 
-    tr.fadeOut('slow', () => tr.remove());
+    uri = tr[0].firstElementChild.getAttribute("data-uri");
+    gstore.deleteTableData(
+        uri, 
+        function () {
+            tr.fadeOut('slow', () => {table.row(tr[0]).remove().draw();});
+            on_success();
+        }, 
+        function () {
+            on_fail();
+        }
+    );
 }
 
 function doUpdateRow(tr, title, description) {
@@ -94,3 +117,28 @@ function searchData(n, title1, intro1, on_success, on_fail) {
         on_fail();
     });
 }
+
+function loadTable(table, title_condition, intro_condition, maxn) {
+
+    function on_success(resultset) { // on_success
+        var timeStamp = getTimeStamp();
+
+        var newRows = resultset.map(function (r) {
+            return getRowTr(r[1], r[2], r[0], timeStamp);
+        });
+
+        table.rows.add(newRows).draw();
+    }
+
+    function on_fail() { // on_fail
+    }
+
+    gstore.getTableData(
+        title_condition,
+        intro_condition,
+        maxn,
+        on_success,
+        on_fail
+    );
+}
+
