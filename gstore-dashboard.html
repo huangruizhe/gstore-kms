@@ -113,6 +113,12 @@
                         <div id="alert-db-fail" class="alert alert-danger">
                             <strong>数据集载入失败!</strong> 请检查服务器是否正常开启，或数据集名称是否正确。
                         </div>
+                        <div id="alert-unload-success" class="alert alert-success">
+                            <strong>数据集卸载成功!</strong>
+                        </div>
+                        <div id="alert-unload-fail" class="alert alert-danger">
+                            <strong>数据集卸载失败!</strong> 
+                        </div>
 
                         <div class="panel panel-info ">
                             <div class="panel-heading ">
@@ -127,6 +133,7 @@
                                             <input class="form-control " id="_db_name_1" placeholder="db_name ">
                                         </div>
                                         <button class="btn btn-default " id="load_button">载入</button>
+                                        <button class="btn btn-default " id="unload_button">卸载</button>
                                         <!--</form>-->
                                     </div>
                                 </div>
@@ -187,12 +194,16 @@
                 var alertServerSucess = $('#alert-server-success'),
                     alertServerFail = $('#alert-server-fail'),
                     alertDbSucess = $('#alert-db-success'),
-                    alertDbFail = $('#alert-db-fail');
+                    alertDbFail = $('#alert-db-fail'),
+                    alertUnloadSucess = $('#alert-unload-success'),
+                    alertUnloadFail = $('#alert-unload-fail');
 
                 alertServerSucess.hide();
                 alertServerFail.hide();
                 alertDbSucess.hide();
                 alertDbFail.hide();
+                alertUnloadSucess.hide();
+                alertUnloadFail.hide();
 
                 $('#server_confirm_button').click(function () {
                     var ipObj = $("#_ip_1");
@@ -256,6 +267,25 @@
                     }, function () {
                         alertDbFail.show();
                         alertDbFail.fadeOut(4000);
+                    });
+                });
+
+                $('#unload_button').click(function () {
+                    var dbObj = $("#_db_name_1");
+                    var dbname = dbObj[0].value.trim();
+
+                    unloadDB(function (data, status) {
+                            alertUnloadSucess.show();
+                            alertUnloadSucess.fadeOut(2000);
+
+                            global_dbname = "null";
+                            dbObj[0].value = "null";
+
+                            setURL();
+
+                    }, function () {
+                        alertUnloadFail.show();
+                        alertUnloadFail.fadeOut(4000);
                     });
                 });
 

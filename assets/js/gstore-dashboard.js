@@ -1,4 +1,4 @@
-function testServer (ip, port, on_success, on_fail) {
+function testServer(ip, port, on_success, on_fail) {
     // https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call
     // https://api.jquery.com/jQuery.get/
 
@@ -11,7 +11,7 @@ function testServer (ip, port, on_success, on_fail) {
     });
 }
 
-function loadDB (dbname, on_success, on_fail) {
+function loadDB(dbname, on_success, on_fail) {
     // unload first
     try {
         $.get(
@@ -20,7 +20,7 @@ function loadDB (dbname, on_success, on_fail) {
                 console.log("Status: " + status + "\nData: " + data);
             }
         );
-    } catch (e) {}
+    } catch (e) { }
 
     // then load the database
     var rs = $.get(
@@ -30,4 +30,20 @@ function loadDB (dbname, on_success, on_fail) {
         on_fail();
         // alert("load db GET failed");
     });
+}
+
+function unloadDB(on_success, on_fail) {
+    // unload first
+    try {
+        $.get(
+            `http://${global_ip}:${global_port}/unload`,
+            function (data, status) {
+                console.log("Status: " + status + "\nData: " + data);
+                on_success(data, status);
+            }
+        ).fail(function () {
+            on_fail();
+            // alert("load db GET failed");
+        });
+    } catch (e) { }
 }
