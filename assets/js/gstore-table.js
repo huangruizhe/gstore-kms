@@ -115,27 +115,27 @@ function parseAllData(data) {
     return result;
 }
 
-function searchData(n, title1, intro1, on_success, on_fail) {
-    var clause1 = "";
-    var clause2 = "";
-    if (title1.length > 0) {
-        clause1 = "FILTER regex(?name, \"" + title1 + "\") ";
-    }
-    if (intro1.length > 0) {
-        clause2 = "FILTER regex(?intro, \"" + intro1 + "\") ";
-    }
+// function searchData(n, title1, intro1, on_success, on_fail) {
+//     var clause1 = "";
+//     var clause2 = "";
+//     if (title1.length > 0) {
+//         clause1 = "FILTER regex(?name, \"" + title1 + "\") ";
+//     }
+//     if (intro1.length > 0) {
+//         clause2 = "FILTER regex(?intro, \"" + intro1 + "\") ";
+//     }
 
-    var sparql = `select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. ${clause1} ${clause2}} limit ${n}`;
-    console.log(sparql);
+//     var sparql = `select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. ${clause1} ${clause2}} limit ${n}`;
+//     console.log(sparql);
 
-    var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
-    $.get(
-        encodeURI(url),
-        on_success
-    ).fail(function () {
-        on_fail();
-    });
-}
+//     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
+//     $.get(
+//         encodeURI(url),
+//         on_success
+//     ).fail(function () {
+//         on_fail();
+//     });
+// }
 
 function loadTable(table, title_condition, intro_condition, maxn) {
 
