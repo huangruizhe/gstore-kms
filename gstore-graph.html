@@ -67,10 +67,65 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                           标题 <small>副标题</small>
+                            标题 <small>副标题</small>
                         </h1>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav id="navbar" class="navbar navbar-default" role="navigation">
+                            <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="main-navbar">
+                                    <ul class="nav navbar-nav">
+                                        <li>
+                                            <form id="highlight-node" class="navbar-form navbar-left" role="search">
+                                                <div class="form-group">
+                                                    <input class="form-control typeahead" type="text" placeholder="Highlight node">
+                                                    <i id="search-reset" class="fa fa-times-circle"></i>
+                                                </div>
+                                            </form>
+                                        </li>
+                                    </ul>
+
+                                    <!--<div class="pull-right">
+                                        <a href="/info/footballers-search-relations/" class="btn navbar-btn btn-info"><i class="fa fa-info"></i> Info</a>
+                                    </div>-->
+
+                                </div>
+                                <!-- /.navbar-collapse -->
+                            </div>
+                            <!-- /.container-fluid -->
+                        </nav>
+
+                        <div id="vis" class="sigma-parent">
+                            <div id="loading">Loading the data may take a while, please be patient...</div>
+                            <div id="sig" class="sigma-expand"></div>
+                        </div>
+
+                        <div id="nodeinfo" class="panel panel-info">
+                            <div class="panel-heading"><button type="button" class="close">&times;</button>
+                                <h2></h2>
+                            </div>
+                            <div class="panel-body"></div>
+                            <div class="panel-footer"><button type="button" class="btn btn-default">Close</button></div>
+                        </div>
+
+                    </div>
+                </div>
+
+
 
                 <footer>
                     <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
@@ -92,6 +147,8 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
+        <script src="assets/js/sigma.min.js"></script>
+        <script src="assets/js/visgexf.js"></script>
 
         <script>
             $(document).ready(function () {
