@@ -2,6 +2,8 @@ var global_ip = "localhost";
 var global_port = "9000";
 var global_dbname = "null";
 
+var entity_id = "http://www.summba.com/ontologies/music/周杰伦"
+
 // 清除两边的空格 
 String.prototype.trim = function () {
     return this.replace(/(^\s*)|(\s*$)/g, '');
