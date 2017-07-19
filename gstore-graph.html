@@ -17,8 +17,9 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <!-- TABLE STYLES-->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-    <link href="assets/css/typeahead.css" rel="stylesheet">
-    <link href="assets/css/sigmagraphdark.css" rel="stylesheet">
+    <!-- EXPLORINGDATA STYLES-->
+    <link href="assets/exploringdata/typeahead.css" rel="stylesheet">
+    <link href="assets/exploringdata/sigmagraphdark.css" rel="stylesheet">
 </head>
 
 <body>
@@ -68,9 +69,9 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-header">
-                            标题 <small>副标题</small>
-                        </h1>
+                        <h3 class="page-header">
+                            数据集：<span id="p-db-name">null</span>
+                        </h3>
                     </div>
                 </div>
 
@@ -78,15 +79,6 @@
                     <div class="col-md-12">
                         <nav id="navbar" class="navbar navbar-default" role="navigation">
                             <div class="container-fluid">
-                                <!-- Brand and toggle get grouped for better mobile display -->
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                </div>
 
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="main-navbar">
@@ -116,6 +108,7 @@
                             <div id="sig" class="sigma-expand"></div>
                         </div>
 
+                        <!-- 结点信息 -->
                         <div id="nodeinfo" class="panel panel-info">
                             <div class="panel-heading"><button type="button" class="close">&times;</button>
                                 <h2></h2>
@@ -147,11 +140,14 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
-        <script src="assets/js/sigmajs/sigma.min.js"></script>
-        <script src="assets/js/typeahead.bundle.min.js"></script>
-        <script src="assets/js/visgexf.js"></script>
-        <script src="assets/js/visgexf_script.js"></script>
-        
+
+        <script src="assets/exploringdata/sigma.min.js"></script>
+        <script src="assets/exploringdata/sigma.parseJson.js"></script>
+        <script src="assets/exploringdata/typeahead.bundle.min.js"></script>
+        <script src="assets/exploringdata/visgexf.js"></script>
+        <script src="assets/exploringdata/script.js"></script>
+        <script src="assets/exploringdata/script(1).js"></script>
+
         <script>
             $(document).ready(function () {
 
@@ -173,25 +169,8 @@
                     setURL();
                 }
 
-                var props = {
-                    drawing: {
-                        defaultLabelColor: '#fff',
-                        defaultLabelSize: 12,
-                        labelThreshold: 6,
-                        defaultEdgeType: 'curve'
-                    },
-                    graph: {
-                        minNodeSize: .5,
-                        maxNodeSize: 10,
-                        minEdgeSize: 1,
-                        maxEdgeSize: 1
-                    },
-                    forceLabel: 0,
-                    type: 'undirected'
-                }
-
-                var G = visgexf.init('sig', '/gexf/footballers-knowledge-graph-maxlevel-5-forceatlas2.json', props);
-
+                // initialize dataset name
+                $("#p-db-name").text(global_dbname);
             });
         </script>
 
