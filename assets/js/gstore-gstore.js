@@ -135,6 +135,7 @@ gstore.updateTableData = function (uri, title, description, on_success, on_fail)
 }
 
 gstore.query = function (sparql, on_success, on_fail) {
+    console.log(sparql);
     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
 
     $.get(
@@ -250,11 +251,38 @@ gstore.getGraphEdges = function (mygraph, on_success, on_fail) {
                 edges.push(new_edge);
             }
 
-            console.log("edges.length=" + edges.length)
-
             mygraph["edges"] = edges;
 
             on_success(mygraph);
+        },
+        function () {
+            on_fail();
+        }
+    );
+}
+
+gstore.getInfoPanel = function (id, on_success, on_fail) {
+    var sparql = `select ?p ?o where {<http://www.summba.com/ontologies/music/${id}> ?p ?o.}`;
+    gstore.query(
+        sparql,
+        function (data, status) {
+            var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+            var resultset = {};
+            var bindings = obj["results"]["bindings"];
+            for (var i in bindings) {
+                var p = bindings[i]["p"]["value"];
+                var o = bindings[i]["o"]["value"];
+
+                p = p.substring(p.lastIndexOf('.') + 1);
+                o = o.substring(o.lastIndexOf('/') + 1);
+
+                if (resultset[p] == undefined) {
+                    resultset[p] = [];
+                }
+                resultset[p].push(o);
+            }
+
+            on_success(resultset);
         },
         function () {
             on_fail();

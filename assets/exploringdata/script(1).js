@@ -1,8 +1,8 @@
-var twitter_list = function(heading, screen_names) {
+var twitter_list = function (heading, screen_names) {
   var html = '';
   if (screen_names.length > 0) {
     list = [];
-    for(i in screen_names) {
+    for (i in screen_names) {
       var sn = screen_names[i];
       // make sure this is a node in the graph, could still be a rejected query
       if (visgexf.queryHasResult(sn))
@@ -13,23 +13,95 @@ var twitter_list = function(heading, screen_names) {
   return html;
 };
 
-var nodeClick = function(Graph) {
-    Graph.sig.bind('upnodes', function(event){
-        hnode = Graph.sig.getNodes(event.content)[0];
-        $.getJSON('/json/visualisingdata-census-twitter/' + hnode.id + '.json', function(data){
-            var desc = '<blockquote><p>' + data.description + '</p></blockquote>';
-            desc += '<p><i class="fa fa-twitter"></i> <a href="https://twitter.com/' + data.screen_name + '">Twitter Profile</a>';
-            if (data.url.length > 0)
-              desc += ' | <i class="fa fa-home"></i> <a href="' + data.url + '">Homepage</a>';
-            desc += '</p>';
-            desc += twitter_list('Twitter Friends from Census', data.friends_census);
-            desc += twitter_list('Twitter Followers from Census', data.followers_census);
-            nodeinfo(data.name, desc);
-        });
-    });
+var nodeClick = function (Graph) {
+  Graph.sig.bind('upnodes', function (event) {
+    hnode = Graph.sig.getNodes(event.content)[0];
+    nodeClickResponse(hnode)
+  });
 };
 
-$(function(){
+var nodeClickResponse = function (node) {
+  gstore.getInfoPanel(
+    node.id,
+    function (resultset) {
+      var desc = "";
+
+      if (resultset["intro"] != undefined) {
+        desc += '<blockquote><p>' + resultset["intro"] + '</p></blockquote>';
+      } else {
+        desc += '<blockquote><p>' + '(空)' + '</p></blockquote>';
+      }
+
+      if (resultset["hasId"] != undefined) {
+        desc += '<h4>ID</h4><span class="property-span">' + resultset["hasId"] + '</span>';
+      }
+
+      if (resultset["isa"] != undefined) {
+        desc += '<h4>类别</h4><span class="property-span">' + resultset["isa"].join(", ") + '</span>';
+      }
+
+      if (resultset["album"] != undefined) {
+        desc += '<h4>所在专辑</h4><span class="property-span">' + resultset["album"] + '</span>';
+      }
+
+      if (resultset["singer"] != undefined) {
+        desc += '<h4>演唱</h4><span class="property-span">' + resultset["singer"] + '</span>';
+      }
+
+      if (resultset["originalSinger"] != undefined) {
+        desc += '<h4>原唱</h4><span class="property-span">' + resultset["originalSinger"] + '</span>';
+      }
+
+      if (resultset["composer"] != undefined) {
+        desc += '<h4>作曲</h4><span class="property-span">' + resultset["composer"] + '</span>';
+      }
+
+      if (resultset["lyricist"] != undefined) {
+        desc += '<h4>作词</h4><span class="property-span">' + resultset["lyricist"] + '</span>';
+      }
+
+      if (resultset["visitNum"] != undefined) {
+        desc += '<h4>播放次数</h4><span class="property-span">' + resultset["visitNum"] + '</span>';
+      }
+
+      if (resultset["albumCreatedBy"] != undefined) {
+        desc += '<h4>专辑歌手</h4><span class="property-span">' + resultset["albumCreatedBy"].join(", ") + '</span>';
+      }
+
+      if (resultset["createdAlbum"] != undefined) {
+        desc += '<h4>专辑</h4><span class="property-span">' + resultset["createdAlbum"].join(", ") + '</span>';
+      }
+      if (resultset["createdSong"] != undefined) {
+        desc += '<h4>作品</h4><span class="property-span">' + resultset["createdSong"].join(", ") + '</span>';
+      }
+
+      if (resultset["composed"] != undefined) {
+        desc += '<h4>作曲</h4><span class="property-span">' + resultset["composed"].join(", ") + '</span>';
+      }
+
+      if (resultset["wroteLyrics"] != undefined) {
+        desc += '<h4>作词</h4><span class="property-span">' + resultset["wroteLyrics"].join(", ") + '</span>';
+      }
+
+      if (resultset["workedWith"] != undefined) {
+        desc += '<h4>合作关系</h4><span class="property-span">' + resultset["workedWith"].join(", ") + '</span>';
+      }
+
+      if (resultset["tag"] != undefined) {
+        desc += '<h4>标签</h4><span class="property-span">' + resultset["tag"].join(" | ") + '</span>';
+      }
+
+      desc = "<div id=\"div-desc\">" + desc + "</div>"
+      nodeinfo(resultset["name"], desc);
+
+    },
+    function () {
+      console.log("error in nodeClick");
+    }
+  );
+}
+
+$(function () {
   var props = {
     drawing: {
       defaultLabelColor: '#fff',
@@ -49,7 +121,7 @@ $(function(){
     type: 'directed'
   }
 
-  visgexf.init('sig', '/gexf/visualisingdata-census-twitter-processed.json', props, function() {
+  visgexf.init('sig', '/gexf/visualisingdata-census-twitter-processed.json', props, function () {
     nodeClick(visgexf);
   });
 });

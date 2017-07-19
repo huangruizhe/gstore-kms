@@ -25,7 +25,7 @@ font-size:1.2em;
 margin:-.5em 0 0 0;
 }
 #search-reset{
-margin-left: -1.3em;
+margin-left: 13em;
 position: absolute;
 top: 1.3em;
 cursor:pointer;
@@ -33,7 +33,7 @@ opacity:.8;
 }
 #loading {
 position:absolute;
-left:30%;
+left:43%;
 top:25%;
 width:40%;
 color:#fff;
@@ -43,8 +43,16 @@ display:none;
 #nodeinfo {
 display: none;
 position: absolute;
-right: 5px;
-top: 58px;
-max-width: 350px;
-opacity: .8;
+right: 20px;
+top: 76px;
+/*max-width: 350px;*/
+width: 350px;
+opacity: .7;
+}
+.property-span {
+color:#428bca;
+}
+#div-desc {
+height: 400px;
+overflow: auto
 }
