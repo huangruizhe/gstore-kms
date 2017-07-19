@@ -63,8 +63,7 @@ var visgexf = {
     var global_ip = "localhost";
     var global_port = "9000";
 
-
-    var sparql = "select ?s ?p ?o where {{?s ?p ?o. FILTER regex(?p, \"link\") } UNION {?s <http://gstore.attr.name> ?o.}}";
+    var sparql = "select ?s ?p ?o where {{?s ?p ?o. FILTER regex(str(?p), \"link\") } UNION {?s <http://gstore.attr.name> ?o.}}";
     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
     $.get(
       encodeURI(url),

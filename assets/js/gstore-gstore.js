@@ -17,7 +17,7 @@ gstore.getTableData = function (title_condition, intro_condition, maxn, on_succe
     if (maxn > 0) {
         sparql += ` limit ${maxn}`
     }
-    
+
     console.log(sparql);
 
     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
@@ -25,7 +25,6 @@ gstore.getTableData = function (title_condition, intro_condition, maxn, on_succe
         encodeURI(url),
         function (data, status) {
             console.log("Status: " + status + "\nData-length: " + data.length);
-            console.log(data)
 
             // parse json result
             var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
@@ -141,11 +140,71 @@ gstore.query = function (sparql, on_success, on_fail) {
     $.get(
         encodeURI(url),
         function (data, status) {
-            console.log("Status: " + status + "\nData-length: " + data.length);            
+            console.log("Status: " + status + "\nData-length: " + data.length);
             on_success(data, status);
         }
-    ).fail(function() {
+    ).fail(function () {
         console.log("gstore.query: failed");
         on_fail();
     });
+}
+
+gstore.getGraphData = function (on_success, on_fail) {
+    var mygraph = {};
+}
+
+gstore.getGraphNodes = function (mygraph, on_success, on_fail) {
+    var sparql = "select ?s ?p ?o where {?s ?p ?o. FILTER (!regex(str(?p), \"tag\"))}";
+
+    gstore.query(
+        sparql,
+        function(data, status) {
+            // {"color":"#059e96","label":"eglinski","attributes":{"Modularity Class":"145"},"y":-1269.4113,"x":-722.0319,"id":"eglinski","size":1.379771}
+
+            var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+
+            var bindings = obj["results"]["bindings"];
+            for (var i in bindings) {
+                s = bindings[i]["s"]["value"];
+                p = bindings[i]["p"]["value"];
+                o = bindings[i]["o"]["value"];
+                
+                if (mygraph[s] != undefined) {
+                    // if (mygraph[s]["edges"] == undefined) {
+                    //     mygraph[s]["edges"] = []
+                    // }
+                    mygraph[s]["edges"].push([p, o])
+                }
+            }
+        },
+        function(){}
+    );
+}
+
+gstore.getGraphEdges = function (mygraph, on_success, on_fail) {
+    var sparql = "select ?s ?p ?o where {?s ?p ?o. FILTER regex(str(?p), \"link\")}";
+
+    gstore.query(
+        sparql,
+        function(data, status) {
+            // {"source":"since1968","attributes":{"id":"11794"},"target":"vlandham","id":"11794","label":""}
+
+            var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+
+            var bindings = obj["results"]["bindings"];
+            for (var i in bindings) {
+                s = bindings[i]["s"]["value"];
+                p = bindings[i]["p"]["value"];
+                o = bindings[i]["o"]["value"];
+                
+                if (mygraph[s] != undefined) {
+                    // if (mygraph[s]["edges"] == undefined) {
+                    //     mygraph[s]["edges"] = []
+                    // }
+                    mygraph[s]["edges"].push([p, o])
+                }
+            }
+        },
+        function(){}
+    );
 }

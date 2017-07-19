@@ -37,7 +37,7 @@ $(function(){
       defaultLabelBGColor: '#fff',
       defaultLabelHoverColor: '#000',
       labelThreshold: 6,
-      defaultEdgeType: 'curve'
+      defaultEdgeType: 'curve',
     },
     graph: {
       minNodeSize: 5,

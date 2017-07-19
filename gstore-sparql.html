@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <textarea class="form-control" id="sparql-text-area" rows="5" placeholder="select * where {?s ?p ?o.} limit 40"></textarea>
+                                <textarea class="form-control" id="sparql-text-area" rows="5" placeholder="select * where {?s ?p ?o.} limit 40" ></textarea>
                             </div>
                             <div class="panel-footer">
                                 <button id="submit-btn" class="btn btn-default">提交</button>
@@ -194,6 +194,8 @@
 
                     $("#response").hide();
 
+                    $("#sparql-text-area").val("select * where {?s ?p ?o.} limit 40");
+
                     $("#submit-btn").click(function () {
                         var sparql = $("#sparql-text-area").val().trim();
 
@@ -203,7 +205,7 @@
                         }
 
                         if (sparql.length == 0) {
-                            $("#sparql-text-area").attr("placeholder", "select * where {?s ?p ?o.} limit 40");
+                            $("#sparql-text-area").val("select * where {?s ?p ?o.} limit 40");
                             return;
                         }
 
@@ -219,7 +221,6 @@
                                         console.log("no datatable exists yet");
                                     }
                                 }
-                                table.remove()
 
                                 $("#query-ans").empty();
 
