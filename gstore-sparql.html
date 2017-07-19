@@ -84,12 +84,20 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <textarea class="form-control" id="sparql-text-area" rows="5" placeholder="select * where {?s ?p ?o.} limit 40" ></textarea>
+                                <textarea class="form-control" id="sparql-text-area" rows="5" placeholder="select * where {?s ?p ?o.} limit 40"></textarea>
                             </div>
                             <div class="panel-footer">
                                 <button id="submit-btn" class="btn btn-default">提交</button>
                                 <button id="reset-btn" class="btn btn-default">重置</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="alert-loading" class="alert alert-warning">
+                            <strong>数据加载中</strong>
                         </div>
                     </div>
                 </div>
@@ -193,6 +201,7 @@
                     });
 
                     $("#response").hide();
+                    $("#alert-loading").hide();
 
                     $("#sparql-text-area").val("select * where {?s ?p ?o.} limit 40");
 
@@ -208,6 +217,10 @@
                             $("#sparql-text-area").val("select * where {?s ?p ?o.} limit 40");
                             return;
                         }
+
+                        $("#alert-loading").show();
+                        $("#response").hide();
+                        $("#query-ans").hide();
 
                         gstore.query(
                             sparql,
@@ -237,8 +250,9 @@
                                 try {
                                     $("#rs-table").dataTable();
                                 } catch (error) {
-                                    
+
                                 }
+                                $("#query-ans").show();
 
                                 $("#response").empty();
                                 var pstatus = $('<p></p>').text("status: " + status);
@@ -246,6 +260,8 @@
                                 $("#response").append(pstatus).append(pdata);
                                 $("#response").scrollTop($("#response").height());
                                 $("#response").show();
+
+                                $("#alert-loading").hide();
                             },
                             function () { }
                         );

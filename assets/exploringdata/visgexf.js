@@ -35,7 +35,7 @@ var visgexf = {
       .drawingProperties(props['drawing'])
       .graphProperties(props['graph'])
       .mouseProperties({ maxRatio: 128 });
-    visgexf.parseData(function () {
+    visgexf.getData(function () {
       visgexf.sig.draw();
       // create array of node labels used for auto complete once
       if (0 == visgexf.nodelabels.length) {
@@ -60,22 +60,18 @@ var visgexf = {
   },
 
   getData: function (callback) {
-    var global_ip = "localhost";
-    var global_port = "9000";
-
-    var sparql = "select ?s ?p ?o where {{?s ?p ?o. FILTER regex(str(?p), \"link\") } UNION {?s <http://gstore.attr.name> ?o.}}";
-    var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
-    $.get(
-      encodeURI(url),
-      function (data, status) {
-        console.log(data);
-      }
+    gstore.getGraphData(
+      callback,
+      visgexf.parseData,
+      function() {}
     );
   },
 
-  parseData: function (callback) {
-    var data = `{"nodes":[{"id":"n0","label":"Anode"},{"id":"n1","label":"Anothernode"},{"id":"n2","label":"Andalastone"}],"edges":[{"id":"e0","source":"n0","target":"n1"},{"id":"e1","source":"n1","target":"n2"},{"id":"e2","source":"n2","target":"n0"}]}`;
-    data = JSON.parse(twitterData);
+  parseData: function (data, callback) {
+    // var data = `{"nodes":[{"id":"n0","label":"Anode"},{"id":"n1","label":"Anothernode"},{"id":"n2","label":"Andalastone"}],"edges":[{"id":"e0","source":"n0","target":"n1"},{"id":"e1","source":"n1","target":"n2"},{"id":"e2","source":"n2","target":"n0"}]}`;
+    //data = JSON.parse(twitterData);
+    console.log(data);
+    data = JSON.parse(data);
 
     visgexf.sig.emptyGraph();
 
