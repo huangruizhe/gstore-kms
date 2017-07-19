@@ -152,9 +152,9 @@ gstore.query = function (sparql, on_success, on_fail) {
 gstore.getGraphData = function (call_back, on_success, on_fail) {
     var mygraph = {};
     gstore.getGraphNodes(
-        mygraph, 
+        mygraph,
         function (g) {
-            on_success(JSON.stringify(g), call_back);
+            on_success(g, call_back);
         },
         function () {
             console.log("gstore.getGraphData: error");
@@ -165,11 +165,12 @@ gstore.getGraphData = function (call_back, on_success, on_fail) {
 
 gstore.getGraphNodes = function (mygraph, on_success, on_fail) {
     // var sparql = "select ?s ?p ?o where {?s ?p ?o. FILTER (!regex(str(?p), \"tag\") && !regex(str(?p), \"intro\") && (regex(str(?p), \"attr\") || regex(str(?p), \"isa\")))}";
-    var sparql = "select ?s ?o where {?s <http://gstore.link.isa> ?o.}";
+    // var sparql = "select ?s ?o where {?s <http://gstore.link.isa> ?o.}";
+    var sparql = "select ?s ?p ?o where {?s ?p ?o. FILTER (regex(str(?p), \"intro\") || regex(str(?p), \"name\") || regex(str(?p), \"isa\"))}";
 
     gstore.query(
         sparql,
-        function(data, status) {
+        function (data, status) {
             // {"color":"#059e96","label":"eglinski","attributes":{"Modularity Class":"145"},"y":-1269.4113,"x":-722.0319,"id":"eglinski","size":1.379771}
             // {"source":"since1968","attributes":{"id":"11794"},"target":"vlandham","id":"11794","label":""}
 
@@ -177,47 +178,57 @@ gstore.getGraphNodes = function (mygraph, on_success, on_fail) {
 
             var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
 
-            var nbuffer = {}
+            var entities = {};
+            var nbuffer = {};
             var slast = "";
             var bindings = obj["results"]["bindings"];
             for (var i in bindings) {
                 s = bindings[i]["s"]["value"];
+                p = bindings[i]["p"]["value"];
                 o = bindings[i]["o"]["value"];
 
-                // assume that the triples are in order
+                p = p.substring(p.lastIndexOf('.') + 1);
 
-                if (s != slast) {
-                    if (Object.keys(nbuffer).length > 0) {
-                        var new_node = {};
-                        new_node["id"] = nbuffer["id"];
-                        new_node["label"] = nbuffer["id"] + "(" + nbuffer["type"].join(",") + ")";
-                        new_node["color"] = Please.make_color();
-                        nodes.push(new_node);
-                    }
-                    nbuffer = {};
-                    nbuffer["id"] = s.substring(s.lastIndexOf('/') + 1);
-                    nbuffer["type"] = [];
+                if (entities[s] == undefined) {
+                    entities[s] = {};
+                    entities[s]["type"] = [];
                 }
-                
-                nbuffer["type"].push(o.substring(o.lastIndexOf('.') + 1));
+
+                if (p.indexOf("isa") >= 0) {
+                    entities[s]["type"].push(o.substring(o.lastIndexOf('.') + 1));
+                } else if (p.indexOf("name") >= 0) {
+                    entities[s]["name"] = o;
+                } else if (p.indexOf("intro") >= 0) {
+                    entities[s]["intro"] = o;
+                } else {
+                    console.log("error in gstore.getGraphNodes: p=" + p);
+                }
+            }
+
+            for (var s in entities) {
+                var new_node = {};
+                new_node["id"] = s.substring(s.lastIndexOf('/') + 1);
+                new_node["label"] = entities[s]["name"]; // + "(" + entities[s]["intro"] + ")";
+                new_node["color"] = Please.make_color();
+                nodes.push(new_node);
             }
 
             mygraph["nodes"] = nodes;
 
             gstore.getGraphEdges(mygraph, on_success, on_fail);
         },
-        function(){
+        function () {
             on_fail();
         }
     );
 }
 
 gstore.getGraphEdges = function (mygraph, on_success, on_fail) {
-    var sparql = "select ?s ?p ?o where {?s ?p ?o. FILTER (regex(str(?p), \"link\")) && !regex(str(?p), \"isa\")))}";
+    var sparql = "select ?s ?p ?o where {?s ?p ?o. FILTER ( regex(str(?p), \"link\") && !regex(str(?p), \"isa\"))}";
 
     gstore.query(
         sparql,
-        function(data, status) {
+        function (data, status) {
             // {"source":"since1968","attributes":{"id":"11794"},"target":"vlandham","id":"11794","label":""}
 
             var edges = [];
@@ -229,21 +240,23 @@ gstore.getGraphEdges = function (mygraph, on_success, on_fail) {
                 s = bindings[i]["s"]["value"];
                 p = bindings[i]["p"]["value"];
                 o = bindings[i]["o"]["value"];
-                
+
                 var new_edge = {};
                 new_edge["source"] = s.substring(s.lastIndexOf('/') + 1);
                 new_edge["target"] = o.substring(o.lastIndexOf('/') + 1);
                 new_edge["id"] = i; // randomString(6);
                 new_edge["label"] = p.substring(p.lastIndexOf('.') + 1);
 
-                edges.push[new_edge];
+                edges.push(new_edge);
             }
+
+            console.log("edges.length=" + edges.length)
 
             mygraph["edges"] = edges;
 
             on_success(mygraph);
         },
-        function(){
+        function () {
             on_fail();
         }
     );

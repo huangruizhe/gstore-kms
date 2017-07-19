@@ -70,8 +70,8 @@ var visgexf = {
   parseData: function (data, callback) {
     // var data = `{"nodes":[{"id":"n0","label":"Anode"},{"id":"n1","label":"Anothernode"},{"id":"n2","label":"Andalastone"}],"edges":[{"id":"e0","source":"n0","target":"n1"},{"id":"e1","source":"n1","target":"n2"},{"id":"e2","source":"n2","target":"n0"}]}`;
     //data = JSON.parse(twitterData);
-    console.log(data);
-    data = JSON.parse(data);
+
+    // data = JSON.parse(data);
 
     visgexf.sig.emptyGraph();
 
