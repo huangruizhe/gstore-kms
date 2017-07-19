@@ -17,6 +17,8 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <!-- TABLE STYLES-->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/typeahead.css" rel="stylesheet">
+    <link href="assets/css/sigmagraphdark.css" rel="stylesheet">
 </head>
 
 <body>
@@ -110,7 +112,7 @@
                         </nav>
 
                         <div id="vis" class="sigma-parent">
-                            <div id="loading">Loading the data may take a while, please be patient...</div>
+                            <div id="loading">数据载入中...</div>
                             <div id="sig" class="sigma-expand"></div>
                         </div>
 
@@ -124,8 +126,6 @@
 
                     </div>
                 </div>
-
-
 
                 <footer>
                     <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
@@ -147,9 +147,11 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
-        <script src="assets/js/sigma.min.js"></script>
+        <script src="assets/js/sigmajs/sigma.min.js"></script>
+        <script src="assets/js/typeahead.bundle.min.js"></script>
         <script src="assets/js/visgexf.js"></script>
-
+        <script src="assets/js/visgexf_script.js"></script>
+        
         <script>
             $(document).ready(function () {
 
@@ -170,6 +172,25 @@
 
                     setURL();
                 }
+
+                var props = {
+                    drawing: {
+                        defaultLabelColor: '#fff',
+                        defaultLabelSize: 12,
+                        labelThreshold: 6,
+                        defaultEdgeType: 'curve'
+                    },
+                    graph: {
+                        minNodeSize: .5,
+                        maxNodeSize: 10,
+                        minEdgeSize: 1,
+                        maxEdgeSize: 1
+                    },
+                    forceLabel: 0,
+                    type: 'undirected'
+                }
+
+                var G = visgexf.init('sig', '/gexf/footballers-knowledge-graph-maxlevel-5-forceatlas2.json', props);
 
             });
         </script>

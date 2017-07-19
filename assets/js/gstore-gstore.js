@@ -12,7 +12,12 @@ gstore.getTableData = function (title_condition, intro_condition, maxn, on_succe
         clause2 = "FILTER regex(?intro, \"" + intro_condition + "\") ";
     }
 
-    var sparql = `select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. ${clause1} ${clause2}} limit ${maxn}`;
+    // var sparql = `select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. ${clause1} ${clause2}} limit ${maxn}`;
+    var sparql = `select ?subject ?name ?intro where {?subject <http://gstore.attr.name> ?name. ?subject <http://gstore.attr.intro> ?intro. ${clause1} ${clause2}}`;
+    if (maxn > 0) {
+        sparql += ` limit ${maxn}`
+    }
+    
     console.log(sparql);
 
     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
@@ -20,6 +25,7 @@ gstore.getTableData = function (title_condition, intro_condition, maxn, on_succe
         encodeURI(url),
         function (data, status) {
             console.log("Status: " + status + "\nData-length: " + data.length);
+            console.log(data)
 
             // parse json result
             var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
@@ -41,7 +47,8 @@ gstore.getTableData = function (title_condition, intro_condition, maxn, on_succe
 
 gstore.insertTableData = function (uri, title, description, on_success, on_fail) {
     var triples = "";
-    triples += `<${uri}> <http://www.founder.attr:name> "${title}". <${uri}> <http://www.founder.attr:简介> "${description}".`;
+    // triples += `<${uri}> <http://www.founder.attr:name> "${title}". <${uri}> <http://www.founder.attr:简介> "${description}".`;
+    triples += `<${uri}> <http://gstore.attr.name> "${title}". <${uri}> <http://gstore.attr.intro> "${description}".`;
     var sparql = "insert data {" + triples + "}";
     console.log(sparql);
 
@@ -93,7 +100,8 @@ gstore.deleteTableData = function (uri, on_success, on_fail) {
 
 gstore.updateTableData = function (uri, title, description, on_success, on_fail) {
     // delete sparql1
-    var sparql1 = "delete where { <" + uri + "> <http://www.founder.attr:name> ?o.}";
+    // var sparql1 = "delete where { <" + uri + "> <http://www.founder.attr:name> ?o.}";
+    var sparql1 = "delete where { <" + uri + "> <http://gstore.attr.name> ?o.}";
     console.log(sparql1);
 
     var url = `http://${global_ip}:${global_port}/query/\"${sparql1}\"`;
@@ -103,7 +111,8 @@ gstore.updateTableData = function (uri, title, description, on_success, on_fail)
             console.log("Status: " + status + "\nData: " + data);
 
             // delete sparql2
-            var sparql2 = "delete where { <" + uri + "> <http://www.founder.attr:简介> ?o.}";
+            // var sparql2 = "delete where { <" + uri + "> <http://www.founder.attr:简介> ?o.}";
+            var sparql2 = "delete where { <" + uri + "> <http://gstore.attr.name> ?o.}";
             console.log(sparql2);
 
             var url2 = `http://${global_ip}:${global_port}/query/\"${sparql2}\"`;

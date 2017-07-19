@@ -219,6 +219,7 @@
                                         console.log("no datatable exists yet");
                                     }
                                 }
+                                table.remove()
 
                                 $("#query-ans").empty();
 
@@ -232,7 +233,11 @@
                                 var table = $(new_table);
                                 $("#query-ans").append(table);
 
-                                $("#rs-table").dataTable();
+                                try {
+                                    $("#rs-table").dataTable();
+                                } catch (error) {
+                                    
+                                }
 
                                 $("#response").empty();
                                 var pstatus = $('<p></p>').text("status: " + status);

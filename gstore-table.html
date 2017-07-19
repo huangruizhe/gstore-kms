@@ -121,7 +121,7 @@
                                         <tr id="tr-input">
                                             <td><input id="td-input1" type="text" class="form-control" placeholder="筛选 名称" /></td>
                                             <td><input id="td-input2" type="text" class="form-control" placeholder="筛选 简介" /></td>
-                                            <td colspan="2"><a class="btn btn-default btn-block" id="search-submit"><span class="glyphicon glyphicon-search"></span> 搜索</a></td>
+                                            <td colspan="2"><a class="btn btn-info btn-sm btn-block" id="search-submit"><span class="glyphicon glyphicon-search"></span> 搜索</a></td>
                                         </tr>
                                         <tr>
                                             <td><strong>名称</strong></td>
@@ -338,7 +338,7 @@
                         table,
                         $('#td-input1')[0].value.trim(),
                         $('#td-input2')[0].value.trim(),
-                        100
+                        -1
                     );
                 }
 
@@ -503,7 +503,7 @@
                         table,
                         title,
                         intro,
-                        100
+                        -1
                     );
                 });
 
