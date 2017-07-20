@@ -1,8 +1,11 @@
 html, body{
-    width: 99%;background-color: #fff;overflow-x: hidden;
+    /*width: 99%;*/
+    background-color: #fff;
+    overflow-x: hidden;
 }
 .container{
-    margin:10px auto;width: 1300px;
+    margin:10px auto;
+    width: 1300px;
 }
 .showcase{
     margin: auto;

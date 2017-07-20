@@ -169,14 +169,21 @@
                 width = 1300,
                 height = 600;
 
-            mycsv = "id,name\n0,Geoff\n1,School\n2,Company\n3,Family\n4,Network\n5,Aaron\n6,Abbott\n7,Jacob\n8,James\n9,Kelvin\n10,Kendall\n11,Kendrick\n12,Leroy\n13,Leslie\n14,Lester\n15,Magnus\n16,Malcolm\n17,Melvin\n18,Perry\n19,Peter\n20,Peyton\n21,Royce\n22,Rufus\n23,Rupert\n24,Hadden\n25,Hadley\n26,Hadwin\n27,Hal\n28,Halbert\n29,Halden\n30,Hale\n31,Gilroy\n32,Glenn\n33,Goddard\n34,Godfrey\n35,Godwin\n36,Graham\n37,Grant\n38,Tobias\n39,Toby\n40,Todd\n41,Tony\n42,Travis\n43,Trent\n44,Trevor\n45,Tristan\n46,Troy\n47,Truman\n48,Tyler";
+            // mycsv = "id,name\n0,Geoff\n1,School\n2,Company\n3,Family\n4,Network\n5,Aaron\n6,Abbott\n7,Jacob\n8,James\n9,Kelvin\n10,Kendall\n11,Kendrick\n12,Leroy\n13,Leslie\n14,Lester\n15,Magnus\n16,Malcolm\n17,Melvin\n18,Perry\n19,Peter\n20,Peyton\n21,Royce\n22,Rufus\n23,Rupert\n24,Hadden\n25,Hadley\n26,Hadwin\n27,Hal\n28,Halbert\n29,Halden\n30,Hale\n31,Gilroy\n32,Glenn\n33,Goddard\n34,Godfrey\n35,Godwin\n36,Graham\n37,Grant\n38,Tobias\n39,Toby\n40,Todd\n41,Tony\n42,Travis\n43,Trent\n44,Trevor\n45,Tristan\n46,Troy\n47,Truman\n48,Tyler";
 
-            function init(o) {
-                for (var t = (o.length, 4), i = [], e = 1; e <= t; e++)
-                    i.push({ source: 0, target: e });
+            function init(nodes, edges) {
+                var o = nodes.map(x => ({id: x[0], name: x[1]}));
 
-                for (var e = t + 1; e < o.length; e++)
-                    i.push({ source: e % t + 1, target: e });
+                var i = edges.map(x => ({source: x[0], target: x[1], label: x[2], isuri: x[3]}));
+
+                // for (var t = (o.length, 4), i = [], e = 1; e <= t; e++)
+                //     i.push({ source: 0, target: e });
+
+                // for (var e = t + 1; e < o.length; e++)
+                //     i.push({ source: e % t + 1, target: e });
+
+                console.log(o);
+                console.log(i);
 
                 initColor(o),
                     initRadius(o);
@@ -193,7 +200,13 @@
                     s.run()
             }
 
-            init(d3.csvParse(mycsv))
+            gstore.getEntityGraphData(
+                entity_id,
+                init,
+                function(){}
+            )
+
+            // init(d3.csvParse(mycsv))
         </script>
 </body>
 
