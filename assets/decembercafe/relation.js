@@ -29,6 +29,7 @@ function relation() {
     },
 
         this.render = function () {
+            // draw edge
             e.clearRect(0, 0, h, i),
                 e.lineWidth = l,
                 e.strokeStyle = "black",
@@ -36,14 +37,15 @@ function relation() {
                 b.forEach(
                     function (a) {
                         e.moveTo(a.source.x, a.source.y),
-                            e.lineTo(a.target.x, a.target.y),
-                            e.fillText("haha", (a.source.x + a.target.x) / 2, (a.source.y + a.target.y) / 2);
+                            e.lineTo(a.target.x, a.target.y);
+                        // e.fillText("haha", (a.source.x + a.target.x) / 2, (a.source.y + a.target.y) / 2);
                     }
                 ),
                 e.stroke(),
+                
+                // draw node
                 e.lineWidth = 3,
                 e.strokeStyle = "black",
-
                 a.forEach(function (a) {
                     e.fillStyle = a.color,
                         e.beginPath(),
@@ -52,6 +54,7 @@ function relation() {
                         e.stroke()
                 }),
 
+                // draw node labels
                 e.font = "14px Comic Sans MS",
                 e.fillStyle = "black",
                 e.textAlign = "center",

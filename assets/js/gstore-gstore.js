@@ -292,123 +292,60 @@ gstore.getInfoPanel = function (id, on_success, on_fail) {
 
 gstore.getEntityGraphData = function (uri, on_success, on_fail) {
     var entities = {};
+
     gstore.getEntityNeighbors(
         uri,
         "",
         function (entity) {
-            var myuri = entity["uri"];
-            if (entities[myuri] == undefined) {
-                entities[myuri] = entity;
-            }
 
-            // BFS
+            // get names of uri neighbors
 
-            var bfs = function (i, a) {
-                var edge = a[i];
-                console.log("i=" + i + ", a.length=" + a.length);
-                console.log(edge);
+            var sparql = `select ?o ?name where {{<${uri}> ?p ?o. ?o <http://gstore.attr.name> ?name.} UNION {?o ?p <${uri}>. ?o <http://gstore.attr.name> ?name.}}`;
+            gstore.query(
+                sparql,
+                function (data, status) {
+                    var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+                    var name_dict = {};
+                    var bindings = obj["results"]["bindings"];
+                    for (var i in bindings) {
+                        var o = bindings[i]["o"]["value"];
+                        var name = bindings[i]["name"]["value"];
 
-                if (edge == "end") {
-                    var nodes = [];
+                        name_dict[o] = name;
+                    }
+
+                    var nodes = [[uri, uri.substring(uri.lastIndexOf('/') + 1)]];
                     var edges = [];
-
-                    for (var id in entities) {
-                        var e = entities[id];
-                        nodes.push([id, id.substring(id.lastIndexOf('/') + 1)]);
-                        for (var temp in e["out"]) {
-                            if (temp[2]) {
-                                if (entities[temp[1]] == undefined) {
-                                    nodes.push([temp[1], temp[1].substring(temp[1].lastIndexOf('/') + 1)]);
+                    var nodeset = { uri: "" };
+                    for (var i in entity["out"]) {
+                        var edge = entity["out"][i];
+                        console.log(edge);
+                        if (edge[2]) {
+                            edges.push([uri, edge[1], edge[0], true]);
+                            if (nodeset[edge[1]] == undefined) {
+                                nodeset[edge[1]] = "";
+                                nodes.push([edge[1], edge[1].substring(edge[1].lastIndexOf('/') + 1)]);
+                                if (edge[0] != "isa") {
+                                    var ll = randomString(4);
+                                    var name = name_dict[edge[1]];
+                                    nodes.push([ll, name.substring(name.lastIndexOf('/') + 1)]);
+                                    edges.push([edge[1], ll, "name", false]);
                                 }
-                                edges.push([id, temp[1], temp[0], true]);
-                            } else {
-                                var ss = randomString(4);
-                                nodes.push([ss, temp[1]]);
-                                edges.push([id, ss, temp[0], false]);
                             }
+                        } else {
+                            var ll = randomString(4);
+                            nodes.push([ll, edge[1].substring(edge[1].lastIndexOf('/') + 1)]);
+                            edges.push([uri, ll, edge[0], false]);
                         }
                     }
 
-                    // nodes: [(uri, label), ...]
-                    // edges: [(uri, uri/literal, label, isUri), ...]
-
-                    console.log("nihaoma");
                     on_success(nodes, edges);
-                } else if (edge[2] && entities[edge[1]] == undefined && edge[0].indexOf("isa") == -1) {
-                    gstore.getEntityNeighbors(
-                        edge[1],
-                        "name",
-                        function (entity) {
-                            var myuri = entity["uri"];
-                            if (entities[myuri] == undefined) {
-                                entities[myuri] = entity;
-                            }
-
-                            function time_call_back() {
-                                bfs(i + 1, a);
-                            }
-
-                            setTimeout(time_call_back, 400);
-                        },
-                        function () {
-                            console.log("error in gstore.getEntityGraphData: 2");
-                            on_fail();
-                        }
-                    );
-                } else {
-                    bfs(i + 1, a);
+                },
+                function () {
+                    console.log("error in gstore.getEntityGraphData")
+                    on_fail();
                 }
-            }
-
-            var arr = entity["out"].concat(entity["in"]);
-            arr.push("end")
-            bfs(0, arr);
-
-            // for (var edge in arr) {
-            //     if (edge == "end") {
-            //         var nodes = [];
-            //         var edges = [];
-
-            //         for (var id in entities) {
-            //             var e = entities[id];
-            //             nodes.push([id, id.substring(id.lastIndexOf('/') + 1)]);
-            //             for (var temp in e["out"]) {
-            //                 if (temp[2]) {
-            //                     if (entities[temp[1]] == undefined) {
-            //                         nodes.push([temp[1], temp[1].substring(temp[1].lastIndexOf('/') + 1)]);
-            //                     }
-            //                     edges.push([id, temp[1], temp[0], true]);                                
-            //                 } else {
-            //                     var ss = randomString(4);
-            //                     nodes.push([ss, temp[1]]);
-            //                     edges.push([id, ss, temp[0], false]);
-            //                 }
-            //             }
-            //         }
-
-            //         // nodes: [(uri, label), ...]
-            //         // edges: [(uri, uri/literal, label, isUri), ...]
-
-            //         console.log("nihaoma");
-            //         on_success(nodes, edges);
-            //     }
-
-            //     if (edge[2] && entities[edge[1]] == undefined) {
-            //         gstore.getEntityNeighbors(
-            //             edge[1],
-            //             function (entity) {
-            //                 var myuri = entity["uri"];
-            //                 if (entities[myuri] == undefined) {
-            //                     entities[myuri] = entity;
-            //                 }
-            //             },
-            //             function () {
-            //                 console.log("error in gstore.getEntityGraphData: 2");
-            //                 on_fail();
-            //             }
-            //         );
-            //     }
-            // }
+            );
         },
         function () {
             console.log("error in gstore.getEntityGraphData: 1");
@@ -466,7 +403,7 @@ gstore.getEntityOutLinks = function (uri, pred_filter, on_success, on_fail) {
 
                 p = p.substring(p.lastIndexOf('.') + 1);
 
-                outedges.push([p, o, isUri]);
+                outedges.push([p, o, isUri]); // outedge
             }
 
             // sparql = `select ?s ?p where {?s ?p <${uri}>.}`;
@@ -499,7 +436,7 @@ gstore.getEntityInLinks = function (uri, pred_filter, on_success, on_fail) {
 
                 p = p.substring(p.lastIndexOf('.') + 1);
 
-                inedges.push([p, s, isUri]);
+                inedges.push([p, s, isUri]); // inedge
             }
 
             on_success(inedges);

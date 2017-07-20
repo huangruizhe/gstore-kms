@@ -4,13 +4,14 @@ function getRowTr(title, description, uri, timeStamp) {
 
     // title = randomString(7);
     // description = randomString(12);
+    var url = document.location.pathname.replace("gstore-table", "gstore-entity") + document.location.search;
 
     var innerHtml;
     if (description.length > maxlen) {
         var shortDescription = description.substring(0, maxlen) + " ...";
-        innerHtml = `<td data-uri='${uri}'>${title}</td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
+        innerHtml = `<td data-uri='${uri}'><a href="${url}#${uri}">${title}</a></td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
     } else {
-        innerHtml = `<td data-uri='${uri}'>${title}</td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
+        innerHtml = `<td data-uri='${uri}'><a href="${url}#${uri}">${title}</a></td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
     }
 
     var tr = document.createElement('tr');
