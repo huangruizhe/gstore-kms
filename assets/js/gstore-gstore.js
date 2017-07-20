@@ -294,6 +294,7 @@ gstore.getEntityGraphData = function (uri, on_success, on_fail) {
     var entities = {};
     gstore.getEntityNeighbors(
         uri,
+        "",
         function (entity) {
             var myuri = entity["uri"];
             if (entities[myuri] == undefined) {
@@ -336,6 +337,7 @@ gstore.getEntityGraphData = function (uri, on_success, on_fail) {
                 } else if (edge[2] && entities[edge[1]] == undefined && edge[0].indexOf("isa") == -1) {
                     gstore.getEntityNeighbors(
                         edge[1],
+                        "name",
                         function (entity) {
                             var myuri = entity["uri"];
                             if (entities[myuri] == undefined) {
@@ -415,15 +417,17 @@ gstore.getEntityGraphData = function (uri, on_success, on_fail) {
     )
 }
 
-gstore.getEntityNeighbors = function (uri, on_success, on_fail) {
+gstore.getEntityNeighbors = function (uri, pred_filter, on_success, on_fail) {
     var entity = { "uri": uri, "out": [], "in": [] };
     gstore.getEntityOutLinks(
         uri,
+        pred_filter,
         function (outedges) {
             entity["out"] = outedges;
 
             gstore.getEntityInLinks(
                 uri,
+                pred_filter,
                 function (inedges) {
                     entity["in"] = inedges;
 
@@ -442,8 +446,13 @@ gstore.getEntityNeighbors = function (uri, on_success, on_fail) {
     );
 }
 
-gstore.getEntityOutLinks = function (uri, on_success, on_fail) {
-    var sparql = `select ?p ?o where {<${uri}> ?p ?o.}`;
+gstore.getEntityOutLinks = function (uri, pred_filter, on_success, on_fail) {
+    var con1 = "";
+    if (pred_filter != undefined && pred_filter.length > 0) {
+        con1 = "FILTER regex(str(?p), \"" + pred_filter + "\") ";
+    }
+
+    var sparql = `select ?p ?o where {<${uri}> ?p ?o. ${con1}}`;
     gstore.query(
         sparql,
         function (data, status) {
@@ -470,8 +479,13 @@ gstore.getEntityOutLinks = function (uri, on_success, on_fail) {
     );
 }
 
-gstore.getEntityInLinks = function (uri, on_success, on_fail) {
-    var sparql = `select ?s ?p where {?s ?p <${uri}>.}`;
+gstore.getEntityInLinks = function (uri, pred_filter, on_success, on_fail) {
+    var con1 = "";
+    if (pred_filter != undefined && pred_filter.length > 0) {
+        con1 = "FILTER regex(str(?p), \"" + pred_filter + "\") ";
+    }
+
+    var sparql = `select ?s ?p where {?s ?p <${uri}>. ${con1}}`;
     gstore.query(
         sparql,
         function (data, status) {
