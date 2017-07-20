@@ -490,3 +490,56 @@ gstore.getEntityInLinks = function (uri, pred_filter, on_success, on_fail) {
         }
     );
 }
+
+gstore.insertTriple = function (s, p, o, on_success, on_fail) {
+    var triples = `<${s}> <${p}> "${o}"`;
+
+    // at the moment, only treat ?o as literal
+
+    var sparql = "insert data {" + triples + "}";
+    console.log(sparql);
+
+    gstore.query(
+        sparql,
+        on_success,
+        on_fail
+    );
+}
+
+gstore.deleteTriple = function (s, p, o, on_success, on_fail) {
+    var triples = `<${s}> <${p}> "${o}"`;
+
+    // at the moment, only treat ?o as literal
+
+    var sparql = "delete data {" + triples + "}";
+    console.log(sparql);
+
+    gstore.query(
+        sparql,
+        on_success,
+        on_fail
+    );
+}
+
+gstore.updateTriple = function (s, p, o, on_success, on_fail) {
+    gstore.insertTriple(
+        s,
+        p,
+        o,
+        function () {
+            gstore.deleteTriple(
+                s, 
+                p, 
+                o,
+                on_success,
+                on_fail,
+            );
+        },
+        function () {
+            console.log("error in gstore.updateTriple");
+        }
+    )
+}
+
+
+
