@@ -26,6 +26,9 @@ var nodeClickResponse = function (node) {
     function (resultset) {
       var desc = "";
 
+      var node_url = document.location.pathname.replace("gstore-graph", "gstore-entity") + document.location.search + "#http://www.summba.com/ontologies/music/" + node.id;
+      desc += '<i class="fa fa-home"></i> <a href="' + node_url + '">知识元详情</a>';
+
       if (resultset["intro"] != undefined) {
         desc += '<blockquote><p>' + resultset["intro"] + '</p></blockquote>';
       } else {

@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="showcase">
-                            <canvas id="entity-canvas" height="600" width="1300" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+                            <canvas id="entity-canvas" height="1000" width="1300" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                 }
                 $("#entity-name").text(getEntityShortName(entity_id));
 
-                // entity graph
+                // init entity graph
 
                 function initColor(r) {
                     r[0].color = "#007FFF",
@@ -169,7 +169,7 @@
 
                 var canvas = document.querySelector("canvas"),
                     width = 1300,
-                    height = 600;
+                    height = 1000;
 
                 // mycsv = "id,name\n0,Geoff\n1,School\n2,Company\n3,Family\n4,Network\n5,Aaron\n6,Abbott\n7,Jacob\n8,James\n9,Kelvin\n10,Kendall\n11,Kendrick\n12,Leroy\n13,Leslie\n14,Lester\n15,Magnus\n16,Malcolm\n17,Melvin\n18,Perry\n19,Peter\n20,Peyton\n21,Royce\n22,Rufus\n23,Rupert\n24,Hadden\n25,Hadley\n26,Hadwin\n27,Hal\n28,Halbert\n29,Halden\n30,Hale\n31,Gilroy\n32,Glenn\n33,Goddard\n34,Godfrey\n35,Godwin\n36,Graham\n37,Grant\n38,Tobias\n39,Toby\n40,Todd\n41,Tony\n42,Travis\n43,Trent\n44,Trevor\n45,Tristan\n46,Troy\n47,Truman\n48,Tyler";
 

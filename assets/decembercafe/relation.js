@@ -1,5 +1,8 @@
 function relation() {
-    var a, b, c, d, e, f = "id", g = 15, h = 600, i = 600, j = -30, k = 20, l = 2;
+    // a: nodes
+    // b: edges
+    // l: node circle line width
+    var a, b, c, d, e, f = "id", g = 15, h = 600, i = 600, j = -30, k = 20, l = 1;
     this.init = function () {
         c = d3.forceSimulation().force(
             "charge",
@@ -16,7 +19,7 @@ function relation() {
 
             c.force(
                 "link",
-                d3.forceLink().links(b).id(function (a) { return a[f] }).distance(k)
+                d3.forceLink().links(b).id(function (a) { return a[f] }).distance(k + 70)
             ),
 
             this.initDrag(),
@@ -38,13 +41,13 @@ function relation() {
                     function (a) {
                         e.moveTo(a.source.x, a.source.y),
                             e.lineTo(a.target.x, a.target.y);
-                        // e.fillText("haha", (a.source.x + a.target.x) / 2, (a.source.y + a.target.y) / 2);
+                        e.fillText(a.label, (a.source.x + a.target.x) / 2, (a.source.y + a.target.y) / 2);
                     }
                 ),
                 e.stroke(),
                 
                 // draw node
-                e.lineWidth = 3,
+                e.lineWidth = 1.5,
                 e.strokeStyle = "black",
                 a.forEach(function (a) {
                     e.fillStyle = a.color,
