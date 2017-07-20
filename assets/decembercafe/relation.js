@@ -9,7 +9,7 @@ function relation() {
             d3.forceManyBody().strength(j)
         ).force(
             "center",
-            d3.forceCenter(h / 2, i / 2 - 100)
+            d3.forceCenter(h / 2, i / 2) // control the position of the center node
             ).force(
             "collide",
             d3.forceCollide(1.2 * g)

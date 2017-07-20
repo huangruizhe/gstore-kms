@@ -26,7 +26,7 @@ var visgexf = {
     var h_win = $(window).height() - $('#navbar').height();
     var h_vis = $(viscontainer).height();
     if (h_win > 400) {
-      $(viscontainer).height(h_win - 300);
+      $(viscontainer).height(h_win - 236);
     }
 
     visgexf.sig = sigma.init(viscontainer)

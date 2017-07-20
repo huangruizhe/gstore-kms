@@ -18,7 +18,7 @@
     <!-- TABLE STYLES-->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
     <!-- DECEMBERCAFE STYLES-->
-    <link href="assets/decembercafe/relationship.css" rel="stylesheet" />
+    <!--<link href="assets/decembercafe/relationship.css" rel="stylesheet" />-->
 </head>
 
 <body>
@@ -67,20 +67,46 @@
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <h1 class="page-header">
                             <span id="entity-name"></span> <small>知识元详情</small>
                         </h1>
                     </div>
+                    <div class="col-md-2">
+                        <div class="pull-right">
+                            <button class="btn btn-info btn-sm" id="btn-hide-edge-label"><span class="glyphicon glyphicon-hand-up"></span> <span>不显示边标签</span> </button>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="pull-right">
-                            <button class="btn btn-info btn-sm" id="btn-hide-edge-label"><span class="glyphicon glyphicon-hand-up"></span> <span>不显示边标签</span> </button>
-                        </div>
                         <div class="showcase">
-                            <canvas id="entity-canvas" height="1000" width="1300" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+                            <canvas id="entity-canvas" height="800" width="1300" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="alert-add-success" class="alert alert-success" style="display:none;">
+                            <strong>三元组添加成功</strong>
+                        </div>
+                        <div id="alert-add-fail" class="alert alert-danger" style="display:none;">
+                            <strong>三元组添加失败</strong>
+                        </div>
+                        <div id="alert-del-success" class="alert alert-success" style="display:none;">
+                            <strong>三元组删除成功</strong>
+                        </div>
+                        <div id="alert-del-fail" class="alert alert-danger" style="display:none;">
+                            <strong>三元组删除失败</strong>
+                        </div>
+                        <div id="alert-upd-success" class="alert alert-success" style="display:none;">
+                            <strong>三元组更新成功</strong>
+                        </div>
+                        <div id="alert-upd-fail" class="alert alert-danger" style="display:none;">
+                            <strong>三元组更新失败</strong>
                         </div>
                     </div>
                 </div>
@@ -93,11 +119,107 @@
                                     <div class="col col-sm-6">
                                         <label>三元组：</label>
                                     </div>
+                                    <div class="col col-sm-6 text-right">
+                                        <button class="btn btn-info btn-sm btn-create" data-title="Delete" data-toggle="modal" data-target="#insert"><span class="glyphicon glyphicon-plus-sign"></span> <span>新建</span> </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="panel-body">
                                 <div id="query-ans"></div>
                             </div>
+
+                            <div class="modal fade" id="insert" tabindex="-1" role="dialog" aria-labelledby="insert" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-insert" aria-hidden="true"></span></button>
+                                            <h4 class="modal-title custom_align" id="Heading">新建知识元</h4>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label class="control-label" for="insert-title">名称</label>
+                                                <input id="insert-title" class="form-control " type="text" placeholder="名称不能为空">
+                                                <!-- disabled -->
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label" for="insert-description">简介</label>
+                                                <textarea id="insert-description" rows="3" class="form-control" placeholder="在这里填写知识元简介"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer ">
+                                            <button type="button" class="btn btn-warning btn-lg" id="confirm-insert" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> 新建</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+
+
+
+                            <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                            <h4 class="modal-title custom_align" id="Heading">编辑知识元</h4>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label class="control-label" for="edit-title">名称</label>
+                                                <input id="edit-title" class="form-control " type="text" placeholder="Title">
+                                                <!-- disabled -->
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label" for="edit-description">简介</label>
+                                                <textarea id="edit-description" rows="3" class="form-control" placeholder="Descrition"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer ">
+                                            <button type="button" class="btn btn-warning btn-lg" id="confirm-update" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> 更新</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+
+
+                            <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                            <h4 class="modal-title custom_align" id="Heading">删除知识元</h4>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> 即将删除这条知识元，以及相关的知识元关系链接，确定吗？</div>
+                                            <div>
+                                                <p id="dp-title">null</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer ">
+                                            <button type="button" class="btn btn-success" id="confirm-delete" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> 是</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 否</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -169,10 +291,12 @@
                         location.href = `gstore-entity.html?ip=${global_ip}&port=${global_port}&db=${global_dbname}${location.hash}`;
                     } else {
                         location.href = `gstore-entity.html?ip=${global_ip}&port=${global_port}&db=${global_dbname}&el=true${location.hash}`;
-                    }                    
+                    }
                 });
 
+                // =========================
                 // init entity graph
+                // =========================
 
                 function initColor(r) {
                     r[0].color = "#007FFF",
@@ -199,7 +323,7 @@
 
                 var canvas = document.querySelector("canvas"),
                     width = 1300,
-                    height = 1000;
+                    height = 800;
 
                 // mycsv = "id,name\n0,Geoff\n1,School\n2,Company\n3,Family\n4,Network\n5,Aaron\n6,Abbott\n7,Jacob\n8,James\n9,Kelvin\n10,Kendall\n11,Kendrick\n12,Leroy\n13,Leslie\n14,Lester\n15,Magnus\n16,Malcolm\n17,Melvin\n18,Perry\n19,Peter\n20,Peyton\n21,Royce\n22,Rufus\n23,Rupert\n24,Hadden\n25,Hadley\n26,Hadwin\n27,Hal\n28,Halbert\n29,Halden\n30,Hale\n31,Gilroy\n32,Glenn\n33,Goddard\n34,Godfrey\n35,Godwin\n36,Graham\n37,Grant\n38,Tobias\n39,Toby\n40,Todd\n41,Tony\n42,Travis\n43,Trent\n44,Trevor\n45,Tristan\n46,Troy\n47,Truman\n48,Tyler";
 
@@ -240,7 +364,9 @@
 
                 // init(d3.csvParse(mycsv))
 
+                // =========================
                 // entity table
+                // =========================
 
                 $("#query-ans").hide();
 
