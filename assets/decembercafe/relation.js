@@ -2,14 +2,14 @@ function relation() {
     // a: nodes
     // b: edges
     // l: node circle line width
-    var a, b, c, d, e, f = "id", g = 15, h = 600, i = 600, j = -30, k = 20, l = 1;
+    var a, b, c, d, e, f = "id", g = 15, h = 600, i = 600, j = -30, k = 20, l = 1, el=true;
     this.init = function () {
         c = d3.forceSimulation().force(
             "charge",
             d3.forceManyBody().strength(j)
         ).force(
             "center",
-            d3.forceCenter(h / 2, i / 2)
+            d3.forceCenter(h / 2, i / 2 - 100)
             ).force(
             "collide",
             d3.forceCollide(1.2 * g)
@@ -41,7 +41,7 @@ function relation() {
                     function (a) {
                         e.moveTo(a.source.x, a.source.y),
                             e.lineTo(a.target.x, a.target.y);
-                        e.fillText(a.label, (a.source.x + a.target.x) / 2, (a.source.y + a.target.y) / 2);
+                        if (el) e.fillText(a.label, (a.source.x + a.target.x) / 2, (a.source.y + a.target.y) / 2);
                     }
                 ),
                 e.stroke(),
@@ -115,6 +115,8 @@ function relation() {
         this.setSize = function (a, b) { h = a, i = b },
 
         this.setCharge = function (a) { j = a },
+
+        this.setShowEdgeLabel = function(a) { el = a },
 
         this.setLinkLength = function (a) { k = a }
 }

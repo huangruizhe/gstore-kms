@@ -317,9 +317,10 @@ gstore.getEntityGraphData = function (uri, on_success, on_fail) {
                     var nodes = [[uri, uri.substring(uri.lastIndexOf('/') + 1)]];
                     var edges = [];
                     var nodeset = { uri: "" };
+
+                    // out edges
                     for (var i in entity["out"]) {
                         var edge = entity["out"][i];
-                        console.log(edge);
                         if (edge[2]) {
                             edges.push([uri, edge[1], edge[0], true]);
                             if (nodeset[edge[1]] == undefined) {
@@ -333,13 +334,56 @@ gstore.getEntityGraphData = function (uri, on_success, on_fail) {
                                 }
                             }
                         } else {
-                            var ll = randomString(4);
-                            nodes.push([ll, edge[1].substring(edge[1].lastIndexOf('/') + 1)]);
-                            edges.push([uri, ll, edge[0], false]);
+                            if (edge[0] != "tag") {
+                                var ll = randomString(4);
+                                nodes.push([ll, edge[1].substring(edge[1].lastIndexOf('/') + 1)]);
+                                edges.push([uri, ll, edge[0], false]);
+                            }
                         }
                     }
 
-                    on_success(nodes, edges);
+                    // in edges
+                    for (var i in entity["in"]) {
+                        var edge = entity["in"][i];
+                        if (edge[2]) {
+                            edges.push([edge[1], uri, edge[0], true]);
+                            if (nodeset[edge[1]] == undefined) {
+                                nodeset[edge[1]] = "";
+                                nodes.push([edge[1], edge[1].substring(edge[1].lastIndexOf('/') + 1)]);
+                                if (edge[0] != "isa") {
+                                    var ll = randomString(4);
+                                    var name = name_dict[edge[1]];
+                                    nodes.push([ll, name.substring(name.lastIndexOf('/') + 1)]);
+                                    edges.push([edge[1], ll, "name", false]);
+                                }
+                            }
+                        } else {
+                            console.log("gstore.getEntityGraphData: cannot come here");
+                        }
+                    }
+
+                    // sort out edges
+                    var new_edges = [];
+                    var edge_dict = {};
+                    for (var i = 0; i < edges.length; i ++) {
+                        var edge = edges[i];
+                        
+                        var eid;
+                        if (edge[0] < edge[1]) {
+                            eid = edge[0] + edge[1];
+                        } else {
+                            eid = edge[1] + edge[0];
+                        }
+
+                        if (edge_dict[eid] == undefined) {
+                            new_edges.push(edge);
+                            edge_dict[eid] = new_edges.length - 1;
+                        } else {
+                            new_edges[edge_dict[eid]][2] += ("/" + edge[2]);
+                        }
+                    }
+
+                    on_success(nodes, new_edges);
                 },
                 function () {
                     console.log("error in gstore.getEntityGraphData")

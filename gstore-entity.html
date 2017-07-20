@@ -76,6 +76,9 @@
 
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="pull-right">
+                            <button class="btn btn-info btn-sm" id="btn-hide-edge-label"><span class="glyphicon glyphicon-hand-up"></span> <span>不显示边标签</span> </button>
+                        </div>
                         <div class="showcase">
                             <canvas id="entity-canvas" height="1000" width="1300" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
                         </div>
@@ -83,7 +86,19 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col col-sm-6">
+                                        <label>三元组：</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="query-ans"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -128,6 +143,7 @@
                     global_ip = params["ip"];
                     global_port = params["port"];
                     global_dbname = params["db"];
+                    document.showEdgeLabel = params["el"];
 
                     setURL();
                 }
@@ -141,6 +157,20 @@
                     entity_id = document.location.hash.substring(1);
                 }
                 $("#entity-name").text(getEntityShortName(entity_id));
+
+                if (document.showEdgeLabel == "true") {
+                    $('#btn-hide-edge-label span:last-child').text("不显示边标签");
+                } else {
+                    $('#btn-hide-edge-label span:last-child').text("显示边标签");
+                }
+
+                $('#btn-hide-edge-label').click(function () {
+                    if (document.showEdgeLabel == "true") {
+                        location.href = `gstore-entity.html?ip=${global_ip}&port=${global_port}&db=${global_dbname}${location.hash}`;
+                    } else {
+                        location.href = `gstore-entity.html?ip=${global_ip}&port=${global_port}&db=${global_dbname}&el=true${location.hash}`;
+                    }                    
+                });
 
                 // init entity graph
 
@@ -184,8 +214,7 @@
                     // for (var e = t + 1; e < o.length; e++)
                     //     i.push({ source: e % t + 1, target: e });
 
-                    console.log(o);
-                    console.log(i);
+                    console.log(edges);
 
                     initColor(o),
                         initRadius(o);
@@ -198,6 +227,7 @@
                         s.setRadius(12),
                         s.setLinkLength(90),
                         s.setCharge(-60),
+                        s.setShowEdgeLabel(document.showEdgeLabel == "true"),
                         s.init(),
                         s.run()
                 }
@@ -209,6 +239,61 @@
                 )
 
                 // init(d3.csvParse(mycsv))
+
+                // entity table
+
+                $("#query-ans").hide();
+
+                var sparql = `select ?subject ?predicate ?object where {{<${entity_id}> ?predicate ?object.} UNION {?subject ?predicate <${entity_id}>.}}`;
+
+                gstore.query(
+                    sparql,
+                    function (data, status) {
+
+                        var table = $('#rs-table');
+                        if (table.length > 0) {
+                            try {
+                                table.DataTable().clear().draw();
+                            } catch (error) {
+                                console.log("no datatable exists yet");
+                            }
+                        }
+
+                        $("#query-ans").empty();
+
+                        var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+                        var thead = obj["head"]["vars"];
+                        var resultset = obj["results"]["bindings"].map(function (r) {
+                            return thead.map(function (x) {
+                                if (r[x] == undefined) {
+                                    return entity_id;
+                                } else {
+                                    return r[x]["value"];
+                                }
+                            })
+                        });
+
+                        rs = [thead, resultset];
+
+                        var new_thead = "<thead><tr id=\"tr-input\">" + rs[0].map((x) => ("<th>" + x + "</th>")).join("") + "</tr></thead>";
+                        var new_tbody = "<tbody>" + rs[1].map(
+                            (r) => ("<tr>" + r.map((c) => ("<td>" + c + "</td>")).join("") + "</tr>")
+                        ).join("") + "</tbody>";
+                        var new_table = "<table id=\"rs-table\" class=\"table table-bordered table-striped table-hover\">\n" + new_thead + "\n" + new_tbody + "\n</table>"
+
+                        var table = $(new_table);
+                        $("#query-ans").append(table);
+
+                        try {
+                            $("#rs-table").dataTable();
+                        } catch (error) {
+
+                        }
+                        $("#query-ans").show();
+                    },
+                    function () { }
+                );
+
             });
         </script>
 
