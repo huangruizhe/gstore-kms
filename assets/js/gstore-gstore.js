@@ -2,6 +2,63 @@
 
 var gstore = {};
 
+gstore.testServer = function (ip, port, on_success, on_fail) {
+    // https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call
+    // https://api.jquery.com/jQuery.get/
+
+    var rs = $.get(
+        `http://${ip}:${port}/load/`,
+        function (data, status) {
+            console.log("Status: " + status + "\nData: " + data);
+            on_success(data, status);
+        }
+    ).fail(function () {
+        on_fail();
+        // alert("test server GET failed");
+    });
+}
+
+gstore.loadDB = function (dbname, on_success, on_fail) {
+    // unload first
+    try {
+        $.get(
+            `http://${global_ip}:${global_port}/unload`,
+            function (data, status) {
+                console.log("Status: " + status + "\nData: " + data);
+            }
+        );
+    } catch (e) { }
+
+    // then load the database
+    var rs = $.get(
+        `http://${global_ip}:${global_port}/load/${dbname}`,
+        function (data, status) {
+            console.log("Status: " + status + "\nData: " + data);
+            on_success(data, status);
+        }
+    ).fail(function () {
+        on_fail();
+        // alert("load db GET failed");
+    });
+}
+
+gstore.unloadDB = function (on_success, on_fail) {
+    // unload first
+    try {
+        $.get(
+            `http://${global_ip}:${global_port}/unload`,
+            function (data, status) {
+                console.log("Status: " + status + "\nData: " + data);
+                on_success(data, status);
+            }
+        ).fail(function () {
+            on_fail();
+            // alert("load db GET failed");
+        });
+    } catch (e) { }
+}
+
+
 gstore.getTableData = function (title_condition, intro_condition, maxn, on_success, on_fail) {
     var clause1 = "";
     var clause2 = "";
@@ -365,9 +422,9 @@ gstore.getEntityGraphData = function (uri, on_success, on_fail) {
                     // sort out edges
                     var new_edges = [];
                     var edge_dict = {};
-                    for (var i = 0; i < edges.length; i ++) {
+                    for (var i = 0; i < edges.length; i++) {
                         var edge = edges[i];
-                        
+
                         var eid;
                         if (edge[0] < edge[1]) {
                             eid = edge[0] + edge[1];
@@ -528,8 +585,8 @@ gstore.updateTriple = function (s, p, o, on_success, on_fail) {
         o,
         function () {
             gstore.deleteTriple(
-                s, 
-                p, 
+                s,
+                p,
                 o,
                 on_success,
                 on_fail,

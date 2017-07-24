@@ -43,23 +43,6 @@ function getURL (url, obj) {
     return url;
 }
 
-function parseURL (url) {
-    var obj = {};
-
-    var searchURL = window.location.search;
-    if (searchURL.length > 0) {
-        searchURL = searchURL.substring(1, searchURL.length);  
-        var params = searchURL.split("&");
-        for (var p in params) {
-            var pp = params[p].split('=');
-            var k = pp[0];
-            var v = pp[1];
-            obj[k] = v;
-        }
-    }
-    
-    return obj;
-}
 
 function getTimeStamp () {
     return new Date().getTime();

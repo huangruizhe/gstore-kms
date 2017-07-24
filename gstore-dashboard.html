@@ -4,13 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>控制面板 - 知识图谱管理系统 Powered by gStore</title>
+
+    <title>控制面板 - gStore</title>
+
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- Morris Chart Styles-->
-
     <!-- Custom Styles-->
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
     <!-- Google Fonts-->
@@ -22,6 +22,7 @@
 <body>
     <div id="wrapper">
 
+        <!--/. NAV TOP  -->
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -32,10 +33,9 @@
                 </button>
                 <a class="navbar-brand" href="index.html">gStore</a>
             </div>
-
         </nav>
-        <!--/. NAV TOP  -->
 
+        <!-- /. NAV SIDE  -->
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
@@ -60,8 +60,8 @@
                 </ul>
             </div>
         </nav>
-        <!-- /. NAV SIDE  -->
 
+        <!-- /. PAGE WRAPPER  -->
         <div id="page-wrapper">
             <div id="page-inner">
                 <!--              <div class="row">
@@ -75,10 +75,10 @@
                 <div class="row">
 
                     <div class="col-lg-12">
-                        <div id="alert-server-success" class="alert alert-success">
+                        <div id="alert-server-success" class="alert alert-success" style="display:none;">
                             <strong>服务器设置成功!</strong>
                         </div>
-                        <div id="alert-server-fail" class="alert alert-danger">
+                        <div id="alert-server-fail" class="alert alert-danger" style="display:none;">
                             <strong>服务器设置失败!</strong> 请检查IP地址和端口号是否正确，服务器是否正常开启或端口是否已打开。
                         </div>
 
@@ -107,17 +107,17 @@
                     </div>
 
                     <div class="col-lg-12 ">
-                        <div id="alert-db-success" class="alert alert-success">
+                        <div id="alert-db-success" class="alert alert-success" style="display:none;">
                             <strong>数据集载入成功!</strong>
                         </div>
-                        <div id="alert-db-fail" class="alert alert-danger">
+                        <div id="alert-db-fail" class="alert alert-danger" style="display:none;">
                             <strong>数据集载入失败!</strong> 请检查服务器是否正常开启，或数据集名称是否正确。
                         </div>
-                        <div id="alert-unload-success" class="alert alert-success">
+                        <div id="alert-unload-success" class="alert alert-success" style="display:none;">
                             <strong>数据集卸载成功!</strong>
                         </div>
-                        <div id="alert-unload-fail" class="alert alert-danger">
-                            <strong>数据集卸载失败!</strong> 
+                        <div id="alert-unload-fail" class="alert alert-danger" style="display:none;">
+                            <strong>数据集卸载失败!</strong>
                         </div>
 
                         <div class="panel panel-info ">
@@ -142,16 +142,13 @@
                     </div>
 
                 </div>
-                <!-- /. ROW  -->
 
                 <footer>
                     <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
                 </footer>
             </div>
-            <!-- /. PAGE INNER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
-        <!-- /. WRAPPER  -->
+
         <!-- JS Scripts-->
         <!-- jQuery Js -->
         <script src="assets/js/jquery-1.10.2.js "></script>
@@ -164,70 +161,40 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
+        <script src="assets/js/gstore-gstore.js"></script>
+        <script src="assets/js/gstore-common.js"></script>
         <script src="assets/js/gstore-dashboard.js"></script>
 
         <script>
             $(document).ready(function () {
 
-                function setURL() {
-                    $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                }
-
-                var params = parseURL(document.URL);
-                if (Object.keys(params).length > 0) {
-                    global_ip = params["ip"];
-                    global_port = params["port"];
-                    global_dbname = params["db"];
-
-                    setURL();
-                }
+                initPageURLs();
 
                 $("#_ip_1").attr('placeholder', global_ip);
                 $("#_port_1").attr('placeholder', global_port);
                 $("#_db_name_1").attr('placeholder', global_dbname);
 
-                var alertServerSucess = $('#alert-server-success'),
-                    alertServerFail = $('#alert-server-fail'),
-                    alertDbSucess = $('#alert-db-success'),
-                    alertDbFail = $('#alert-db-fail'),
-                    alertUnloadSucess = $('#alert-unload-success'),
-                    alertUnloadFail = $('#alert-unload-fail');
-
-                alertServerSucess.hide();
-                alertServerFail.hide();
-                alertDbSucess.hide();
-                alertDbFail.hide();
-                alertUnloadSucess.hide();
-                alertUnloadFail.hide();
-
                 $('#server_confirm_button').click(function () {
                     var ipObj = $("#_ip_1");
                     var portObj = $("#_port_1");
-                    var ip = ipObj[0].value.trim();
-                    var port = portObj[0].value.trim();
+                    var ip = ipObj.val().trim();
+                    var port = portObj.val().trim();
 
                     if (ip.length == 0) {
-                        ipObj[0].value = ipObj.attr('placeholder');
-                        ip = ipObj[0].value.trim();
+                        ipObj.val(ipObj.attr('placeholder'));
+                        ip = ipObj.val().trim();
                     }
                     if (port.length == 0) {
-                        portObj[0].value = portObj.attr('placeholder');
-                        port = portObj[0].value.trim();
+                        portObj.val(portObj.attr('placeholder'));
+                        port = portObj.val().trim();
                     }
 
                     // console.log("ip=" + ip);
                     // console.log("port=" + port);
 
                     testServer(ip, port, function (data, status) {
-                        console.log("Status: " + status + "\nData: " + data);
                         if (status == 'success') {
-                            alertServerSucess.show();
-                            alertServerSucess.fadeOut(2000);
+                            $('#alert-server-success').show().fadeOut(2000);
 
                             global_ip = ip;
                             global_port = port;
@@ -235,14 +202,13 @@
                             setURL();
                         }
                     }, function () {
-                        alertServerFail.show();
-                        alertServerFail.fadeOut(4000);
+                        $('#alert-server-fail').show().fadeOut(4000);
                     });
                 });
 
                 $('#load_button').click(function () {
                     var dbObj = $("#_db_name_1");
-                    var dbname = dbObj[0].value.trim();
+                    var dbname = dbObj.val().trim();
 
                     if (dbname.length == 0) {
                         dbname = dbObj.attr('placeholder');
@@ -253,20 +219,17 @@
 
                     loadDB(dbname, function (data, status) {
                         if (data == 'Database loaded successfully.') {
-                            alertDbSucess.show();
-                            alertDbSucess.fadeOut(2000);
+                            $('#alert-db-success').show().fadeOut(2000);
 
                             global_dbname = dbname;
-                            dbObj[0].value = dbname;
+                            dbObj.val(dbname);
 
                             setURL();
                         } else {
-                            alertDbFail.show();
-                            alertDbFail.fadeOut(4000);
+                            $('#alert-db-fail').show().fadeOut(4000);
                         }
                     }, function () {
-                        alertDbFail.show();
-                        alertDbFail.fadeOut(4000);
+                        $('#alert-db-fail').show().fadeOut(4000);
                     });
                 });
 
@@ -275,17 +238,15 @@
                     var dbname = dbObj[0].value.trim();
 
                     unloadDB(function (data, status) {
-                            alertUnloadSucess.show();
-                            alertUnloadSucess.fadeOut(2000);
+                        $('#alert-unload-success').show().fadeOut(2000);
 
-                            global_dbname = "null";
-                            dbObj[0].value = "null";
+                        global_dbname = "null";
+                        dbObj.val("null");
 
-                            setURL();
+                        setURL();
 
                     }, function () {
-                        alertUnloadFail.show();
-                        alertUnloadFail.fadeOut(4000);
+                        $('#alert-unload-fail').show().fadeOut(4000);
                     });
                 });
 
