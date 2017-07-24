@@ -130,7 +130,8 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <div class="alert alert-warning alert-dismissible fade in" style="margin: 20px auto; height: 400px; overflow: auto; display:none" id="response">
+                                <div class="alert alert-warning alert-dismissible fade in" style="margin: 20px auto; height: 400px; overflow: auto; display:none"
+                                    id="response">
                                 </div>
                             </div>
                         </div>
@@ -158,22 +159,6 @@
             <script src="assets/js/gstore-gstore.js"></script>
 
             <script>
-                function parseJsonData(data) {
-                    var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
-                    var thead = obj["head"]["vars"];
-                    var resultset = obj["results"]["bindings"].map(function (r) {
-                        return thead.map(function (x) {
-                            if (r[x] == undefined) {
-                                return "";
-                            } else {
-                                return r[x]["value"];
-                            }
-                        })
-                    });
-
-                    return [thead, resultset];
-                }
-
                 document.default_sparql = "select * where {?s ?p ?o. FILTER(regex(str(?o), \"刘欢\"))} limit 40";
 
                 $(document).ready(function () {
@@ -212,6 +197,22 @@
                                 }
 
                                 $("#query-ans").empty();
+
+                                function parseJsonData(data) {
+                                    var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+                                    var thead = obj["head"]["vars"];
+                                    var resultset = obj["results"]["bindings"].map(function (r) {
+                                        return thead.map(function (x) {
+                                            if (r[x] == undefined) {
+                                                return "";
+                                            } else {
+                                                return r[x]["value"];
+                                            }
+                                        })
+                                    });
+
+                                    return [thead, resultset];
+                                }
 
                                 var rs = parseJsonData(data);
                                 var new_thead = "<thead><tr id=\"tr-input\">" + rs[0].map((x) => ("<th>" + x + "</th>")).join("") + "</tr></thead>";
