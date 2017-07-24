@@ -159,6 +159,7 @@
             <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
             <!-- Custom Js -->
             <script src="assets/js/gstore-util.js"></script>
+            <script src="assets/js/gstore-common.js"></script>
             <script src="assets/js/gstore-gstore.js"></script>
 
             <script>
@@ -180,23 +181,7 @@
 
                 $(document).ready(function () {
 
-                    function setURL() {
-                        $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                        $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                        $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                        $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                        $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                        $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    }
-
-                    var params = parseURL(document.URL);
-                    if (Object.keys(params).length > 0) {
-                        global_ip = params["ip"];
-                        global_port = params["port"];
-                        global_dbname = params["db"];
-
-                        setURL();
-                    }
+                    initPageURLs();
 
                     $("#reset-btn").click(function () {
                         $("#sparql-text-area").val("");

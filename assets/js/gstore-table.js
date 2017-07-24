@@ -1,4 +1,4 @@
-function getRowTr(title, description, uri, timeStamp) {
+function getRowTr(s, p, o, timeStamp) {
     var dataId = randomString(5);
     var maxlen = 70;
 
@@ -6,40 +6,39 @@ function getRowTr(title, description, uri, timeStamp) {
     // description = randomString(12);
     var url = document.location.pathname.replace("gstore-table", "gstore-entity") + document.location.search;
 
-    var innerHtml;
-    if (description.length > maxlen) {
-        var shortDescription = description.substring(0, maxlen) + " ...";
-        innerHtml = `<td data-uri='${uri}'><a href="${url}#${uri}">${title}</a></td> <td title='${description}'>${shortDescription}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
+    var tdr0 = `<td><a href="${url}#${s}">${s}</a></td>`;
+    var tdr1 = `<td>${p}</td>`;
+    var tdr2;
+    if (o.indexOf('http://www') == 0) {
+        tdr2 = `<td><a href="${url}#${o}">${o}</a></td>`;
     } else {
-        innerHtml = `<td data-uri='${uri}'><a href="${url}#${uri}">${title}</a></td> <td>${description}</td> <td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
+        if (o.length > maxlen) {
+            var o = o.substring(0, maxlen) + " ...";
+        }
+        tdr2 = `<td>${o}</td>`;
     }
 
     var tr = document.createElement('tr');
-    tr.innerHTML = innerHtml;
-
+    tr.innerHTML = `${tdr0}${tdr1}${tdr2}<td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
     return tr;
 }
 
-function doInsertRow(table, title, description, on_sucess, on_fail) {
-    if (title.length == 0) {
-        alert("知识元名称为空");
+function doInsertRow(table, s, p, o, on_success, on_fail) {
+    if (s.length == 0 || p.length == 0) {
+        alert("subject或predicate内容为空");
         on_fail();
         return;
     }
 
-    var uri = "http://www.founder/" + randomString(5);
-    var tr = getRowTr(title, description, uri, getTimeStamp());
+    var tr = getRowTr(s, p, o, getTimeStamp());
 
-    // console.log(title);
-    // console.log(description);
-
-    gstore.insertTableData(
-        uri,
-        title,
-        description,
+    gstore.insertTriple(
+        s,
+        p,
+        o,
         function () {
             table.row.add(tr).draw();
-            on_sucess();
+            on_success();
         },
         function () {
             on_fail();
@@ -48,12 +47,15 @@ function doInsertRow(table, title, description, on_sucess, on_fail) {
 }
 
 function doDelRow(table, tr, on_success, on_fail) {
-    // This would have problem, because it does not change the dataTable internally
-    // TODO: use dataTable built-in row.remove() function
+    var tds = tr.find('td');
+    var s = tds[0].innerText;
+    var p = tds[1].innerText;
+    var o = tds[2].innerText;
 
-    uri = tr[0].firstElementChild.getAttribute("data-uri");
-    gstore.deleteTableData(
-        uri,
+    gstore.deleteTriple(
+        s,
+        p,
+        o,
         function () {
             tr.fadeOut('slow', () => { table.row(tr[0]).remove().draw(); });
             on_success();
@@ -64,19 +66,18 @@ function doDelRow(table, tr, on_success, on_fail) {
     );
 }
 
-function doUpdateRow(table, tr, title, description, on_success, on_fail) {
-    // tr.find('td:first-child').text(title);
-    // tr.find('td:nth-child(2)').text(description);
-
-    uri = tr[0].firstElementChild.getAttribute("data-uri");
-    gstore.updateTableData(
-        uri,
-        title,
-        description,
+function doUpdateRow(table, tr, s, p, o, on_success, on_fail) {
+    gstore.updateTriple(
+        s,
+        p,
+        o,
         function () {
+            var url = document.location.pathname.replace("gstore-table", "gstore-entity") + document.location.search;
+
             var rowObj = table.row(tr[0]).data();
-            rowObj[0] = title;
-            rowObj[1] = description;
+            rowObj[0] = `<a href="${url}#${s}">${s}</a>`;
+            rowObj[1] = p;
+            rowObj[2] = o;
 
             table.row(tr[0]).data(rowObj).draw();
 
@@ -88,77 +89,24 @@ function doUpdateRow(table, tr, title, description, on_success, on_fail) {
     );
 }
 
-var buttonId = undefined;
+function loadTable(table, condition, maxn, on_success, on_fail) {
 
-function loadAllData(n, on_success, on_fail) {
-    var sparql = "select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. } limit " + n;
-    console.log(sparql);
-
-    var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
-    $.get(
-        encodeURI(url),
-        on_success
-    ).fail(function () {
-        on_fail();
-    });
-}
-
-function parseAllData(data) {
-    var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
-    var result = [];
-
-    // var vars = obj["head"]["vars"];
-    var bindings = obj["results"]["bindings"];
-    for (var i in bindings) {
-        result.push([bindings[i]["subject"]["value"], bindings[i]["name"]["value"], bindings[i]["intro"]["value"]]);
-    }
-
-    return result;
-}
-
-// function searchData(n, title1, intro1, on_success, on_fail) {
-//     var clause1 = "";
-//     var clause2 = "";
-//     if (title1.length > 0) {
-//         clause1 = "FILTER regex(?name, \"" + title1 + "\") ";
-//     }
-//     if (intro1.length > 0) {
-//         clause2 = "FILTER regex(?intro, \"" + intro1 + "\") ";
-//     }
-
-//     var sparql = `select ?subject ?name ?intro where {?subject <http://www.founder.attr:name> ?name. ?subject <http://www.founder.attr:简介> ?intro. ${clause1} ${clause2}} limit ${n}`;
-//     console.log(sparql);
-
-//     var url = `http://${global_ip}:${global_port}/query/\"${sparql}\"`;
-//     $.get(
-//         encodeURI(url),
-//         on_success
-//     ).fail(function () {
-//         on_fail();
-//     });
-// }
-
-function loadTable(table, title_condition, intro_condition, maxn) {
-
-    function on_success(resultset) { // on_success
-        var timeStamp = getTimeStamp();
-
-        var newRows = resultset.map(function (r) {
-            return getRowTr(r[1], r[2], r[0], timeStamp);
-        });
-
-        table.rows.add(newRows).draw();
-    }
-
-    function on_fail() { // on_fail
-    }
-
-    gstore.getTableData(
-        title_condition,
-        intro_condition,
+    gstore.getSPO(
+        condition,
         maxn,
-        on_success,
+        function (resultset) {
+            var timeStamp = getTimeStamp();
+
+            var newRows = resultset.map(function (r) {
+                return getRowTr(r[0], r[1], r[2], timeStamp);
+            });
+
+            table.rows.add(newRows).draw();
+
+            on_success();
+        },
         on_fail
     );
 }
 
+var buttonId = undefined;

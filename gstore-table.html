@@ -11,8 +11,6 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- Morris Chart Styles-->
-
     <!-- Custom Styles-->
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
     <!-- Google Fonts-->
@@ -34,7 +32,6 @@
                 <a class="navbar-brand" href="index.html">gStore</a>
             </div>
         </nav>
-        <!--/. NAV TOP  -->
 
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
@@ -60,7 +57,6 @@
                 </ul>
             </div>
         </nav>
-        <!-- /. NAV SIDE  -->
 
         <div id="page-wrapper">
             <div id="page-inner">
@@ -72,27 +68,29 @@
                         </h3>
                     </div>
                 </div>
-                <!-- /. ROW  -->
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <div id="alert-add-success" class="alert alert-success">
-                            <strong>知识元添加成功</strong>
+                        <div id="alert-add-success" class="alert alert-success" style="display:none;">
+                            <strong>三元组添加成功</strong>
                         </div>
-                        <div id="alert-add-fail" class="alert alert-danger">
-                            <strong>知识元添加失败</strong>
+                        <div id="alert-add-fail" class="alert alert-danger" style="display:none;">
+                            <strong>三元组添加失败</strong>
                         </div>
-                        <div id="alert-del-success" class="alert alert-success">
-                            <strong>知识元删除成功</strong>
+                        <div id="alert-del-success" class="alert alert-success" style="display:none;">
+                            <strong>三元组删除成功</strong>
                         </div>
-                        <div id="alert-del-fail" class="alert alert-danger">
-                            <strong>知识元删除失败</strong>
+                        <div id="alert-del-fail" class="alert alert-danger" style="display:none;">
+                            <strong>三元组删除失败</strong>
                         </div>
-                        <div id="alert-upd-success" class="alert alert-success">
-                            <strong>知识元更新成功</strong>
+                        <div id="alert-upd-success" class="alert alert-success" style="display:none;">
+                            <strong>三元组更新成功</strong>
                         </div>
-                        <div id="alert-upd-fail" class="alert alert-danger">
-                            <strong>知识元更新失败</strong>
+                        <div id="alert-upd-fail" class="alert alert-danger" style="display:none;">
+                            <strong>三元组更新失败</strong>
+                        </div>
+                        <div id="alert-data-loading" class="alert alert-warning" style="display:none;">
+                            <strong>数据加载中</strong>
                         </div>
                     </div>
                 </div>
@@ -105,7 +103,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col col-sm-6">
-                                        <h3 class="panel-title">知识元列表</h3>
+                                        <h3 class="panel-title">三元组列表</h3>
                                     </div>
                                     <div class="col col-sm-6 text-right">
                                         <button class="btn btn-info btn-sm btn-create" data-title="Delete" data-toggle="modal" data-target="#insert"><span class="glyphicon glyphicon-plus-sign"></span> <span>新建</span> </button>
@@ -113,19 +111,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /. PANEL HEADING  -->
 
                             <div class="panel-body">
                                 <table id="mytable" class="table table-bordered table-striped table-hover">
                                     <thead>
-                                        <tr id="tr-input">
-                                            <td><input id="td-input1" type="text" class="form-control" placeholder="筛选 名称" /></td>
-                                            <td><input id="td-input2" type="text" class="form-control" placeholder="筛选 简介" /></td>
+                                        <tr id="tr-input" style="display:none;">
+                                            <td><input id="td-input1" type="text" class="form-control" placeholder="筛选 Subject"
+                                                /></td>
+                                            <td><input id="td-input2" type="text" class="form-control" placeholder="筛选 Predicate"
+                                                /></td>
+                                            <td><input id="td-input3" type="text" class="form-control" placeholder="筛选 Object"
+                                                /></td>
                                             <td colspan="2"><a class="btn btn-info btn-sm btn-block" id="search-submit"><span class="glyphicon glyphicon-search"></span> 搜索</a></td>
                                         </tr>
                                         <tr>
-                                            <td><strong>名称</strong></td>
-                                            <td><strong>简介</strong></td>
+                                            <td><strong>subject</strong></td>
+                                            <td><strong>predicate</strong></td>
+                                            <td><strong>object</strong></td>
                                             <td align="center"><strong>编辑</strong></td>
                                             <td align="center"><strong>删除</strong></td>
                                             <td><strong>Time</strong></td>
@@ -137,28 +139,8 @@
                                 </table>
 
                             </div>
-                            <!-- /. PANEL BODY  -->
-
-                            <!--<div class="panel-footer">
-                                <div class="row">
-                                    <div class="col col-xs-4">Page 1 of 5</div>
-                                    <div class="col col-xs-12">
-                                        <ul class="pagination hidden-xs pull-right">
-                                            <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>
-                                            <li><a href="#">5</a></li>
-                                            <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>-->
-                            <!-- /. PANEL FOOTER  -->
 
                         </div>
-                        <!-- /. PANEL TABLE  -->
 
 
                         <div class="modal fade" id="insert" tabindex="-1" role="dialog" aria-labelledby="insert" aria-hidden="true">
@@ -167,19 +149,23 @@
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-insert" aria-hidden="true"></span></button>
-                                        <h4 class="modal-title custom_align" id="Heading">新建知识元</h4>
+                                        <h4 class="modal-title custom_align" id="Heading">新建三元组</h4>
                                     </div>
 
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label class="control-label" for="insert-title">名称</label>
-                                            <input id="insert-title" class="form-control " type="text" placeholder="名称不能为空">
-                                            <!-- disabled -->
+                                            <label class="control-label" for="insert-subject">Subject</label>
+                                            <input id="insert-subject" class="form-control " type="text" placeholder="subject">
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label" for="insert-description">简介</label>
-                                            <textarea id="insert-description" rows="3" class="form-control" placeholder="在这里填写知识元简介"></textarea>
+                                            <label class="control-label" for="insert-predicate">Predicate</label>
+                                            <input id="insert-predicate" class="form-control " type="text" placeholder="predicate">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="insert-object">Object</label>
+                                            <input id="insert-object" class="form-control " type="text" placeholder="object">
                                         </div>
                                     </div>
 
@@ -187,9 +173,7 @@
                                         <button type="button" class="btn btn-warning btn-lg" id="confirm-insert" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> 新建</button>
                                     </div>
                                 </div>
-                                <!-- /.modal-content -->
                             </div>
-                            <!-- /.modal-dialog -->
                         </div>
 
 
@@ -200,19 +184,23 @@
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                        <h4 class="modal-title custom_align" id="Heading">编辑知识元</h4>
+                                        <h4 class="modal-title custom_align" id="Heading">编辑三元组</h4>
                                     </div>
 
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label class="control-label" for="edit-title">名称</label>
-                                            <input id="edit-title" class="form-control " type="text" placeholder="Title">
-                                            <!-- disabled -->
+                                            <label class="control-label" for="edit-subject">Subject</label>
+                                            <input id="edit-subject" class="form-control " type="text" placeholder="subject">
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label" for="edit-description">简介</label>
-                                            <textarea id="edit-description" rows="3" class="form-control" placeholder="Descrition"></textarea>
+                                            <label class="control-label" for="edit-predicate">Predicate</label>
+                                            <input id="edit-predicate" class="form-control " type="text" placeholder="predicate">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="edit-object">Object</label>
+                                            <input id="edit-object" class="form-control " type="text" placeholder="object">
                                         </div>
                                     </div>
 
@@ -220,9 +208,7 @@
                                         <button type="button" class="btn btn-warning btn-lg" id="confirm-update" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> 更新</button>
                                     </div>
                                 </div>
-                                <!-- /.modal-content -->
                             </div>
-                            <!-- /.modal-dialog -->
                         </div>
 
 
@@ -232,14 +218,25 @@
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                        <h4 class="modal-title custom_align" id="Heading">删除知识元</h4>
+                                        <h4 class="modal-title custom_align" id="Heading">删除三元组</h4>
                                     </div>
 
                                     <div class="modal-body">
 
-                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> 即将删除这条知识元，及所有相关的关系链接，确定吗？</div>
-                                        <div>
-                                            <p id="dp-title">null</p>
+                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> 即将删除这条三元组，确定吗？</div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="delete-subject">Subject</label>
+                                            <input id="delete-subject" class="form-control " type="text" disabled="disabled" placeholder="subject">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="edit-predicate">Predicate</label>
+                                            <input id="delete-predicate" class="form-control " type="text" disabled="disabled" placeholder="predicate">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="edit-object">Object</label>
+                                            <input id="delete-object" class="form-control " type="text" disabled="disabled" placeholder="object">
                                         </div>
                                     </div>
 
@@ -248,22 +245,16 @@
                                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 否</button>
                                     </div>
                                 </div>
-                                <!-- /.modal-content -->
                             </div>
-                            <!-- /.modal-dialog -->
                         </div>
-
                     </div>
-                    <!-- /. ROW  -->
                 </div>
                 <footer>
                     <p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p>
                 </footer>
             </div>
-            <!-- /. PAGE INNER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
-        <!-- /. WRAPPER  -->
+
         <!-- JS Scripts-->
         <!-- jQuery Js -->
         <script src="assets/js/jquery-1.10.2.js"></script>
@@ -276,139 +267,91 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
-        <script src="assets/js/gstore-table.js"></script>
+        <script src="assets/js/gstore-common.js"></script>
         <script src="assets/js/gstore-gstore.js"></script>
+        <script src="assets/js/gstore-table.js"></script>
 
         <script>
             $(document).ready(function () {
 
-                // hide alerts
-                [
-                    '#alert-add-success',
-                    '#alert-add-fail',
-                    '#alert-del-success',
-                    '#alert-del-fail',
-                    '#alert-upd-success',
-                    '#alert-upd-fail'
-                ].map(e => $(e).hide());
-
-                // parse urls
-                var params = parseURL(document.URL);
-                if (Object.keys(params).length > 0) {
-                    global_ip = params["ip"];
-                    global_port = params["port"];
-                    global_dbname = params["db"];
-
-                    // set urls
-                    [
-                        "#a-dash",
-                        "#a-tb",
-                        "#a-gr",
-                        "#a-dt",
-                        "#a-sp",
-                        "#a-hp"
-                    ].map(e => $(e)[0].href = getURL($(e)[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname }));
-                }
+                initPageURLs();
 
                 // initialize datatable object
                 $('#mytable').dataTable({
                     // "ordering": false,
                     "searching": false,
                     "columnDefs": [
-                        { "width": "6%", "targets": 0 },
-                        { "width": "80%", "targets": 1 },
-                        { "width": "6%", "targets": 2 },
+                        { "width": "35%", "targets": 0 },
+                        { "width": "15%", "targets": 1 },
+                        { "width": "35%", "targets": 2 },
                         { "width": "6%", "targets": 3 },
+                        { "width": "6%", "targets": 4 },
                         {
-                            "targets": [4],
+                            "targets": [5],
                             "visible": false,
                             "searchable": false
                         }
                     ],
-                    "order": [[4, "desc"]]
+                    "order": [[5, "desc"]]
                 });
 
                 var table = $('#mytable').DataTable();
+
+                var max_triples_num = 3000;
 
                 // initialize table data
                 if (global_dbname == "null") {
                     alert("请先打开服务器(bin/ghttp)，并在\"控制面板\"中配置服务器和数据集参数");
                 } else {
+                    $("#alert-data-loading").show();
                     loadTable(
                         table,
-                        $('#td-input1')[0].value.trim(),
-                        $('#td-input2')[0].value.trim(),
-                        -1
+                        {},
+                        max_triples_num,  // only show 3000 triples at most, to avoid the page getting stuck...
+                        function () {
+                            $("#alert-data-loading").hide();
+                        },
+                        function () { }
                     );
                 }
 
                 // initialize dataset name
                 $("#p-db-name").text(global_dbname);
 
-                // var dataTable = $('#mytable').DataTable();
-
-                // $('input', '#td-input1').on('keyup change', function () {
-                // if (that.search() !== this.value) {
-                //     that
-                //         .search(this.value)
-                //         .draw();
-                // }
-                // });
-
-                // $('input', '#td-input2').on('keyup change', function () {
-                // if (that.search() !== this.value) {
-                //     that
-                //         .search(this.value)
-                //         .draw();
-                // }
-                // });
-
-                // $("#mytable #checkall").click(function () {
-                //     if ($("#mytable #checkall").is(':checked')) {
-                //         $("#mytable input[type=checkbox]").each(function () {
-                //             $(this).prop("checked", true);
-                //         });
-
-                //     } else {
-                //         $("#mytable input[type=checkbox]").each(function () {
-                //             $(this).prop("checked", false);
-                //         });
-                //     }
-                // });
-
-                // $("[data-toggle=tooltip]").tooltip();
-
+                // bind events
                 $("#delete").on("show.bs.modal", function (e) {
                     buttonId = $(e.relatedTarget).data("id");
 
                     var tr = $("#mytable tr td button.btn-danger[data-id=" + buttonId + "]").parents('tr')
-                    var titlePlaceholder = tr.find('td:first-child').text();
+                    var tds = tr.find('td');
+                    //console.log(tds);
 
-                    $('#dp-title').html("<strong>名称</strong>：[" + titlePlaceholder + "]")
+                    $('#delete-subject').val(tds[0].innerText);
+                    $('#delete-predicate').val(tds[1].innerText);
+                    $('#delete-object').val(tds[2].innerText);
                 });
 
                 $("#edit").on("show.bs.modal", function (e) {
                     buttonId = $(e.relatedTarget).data("id");
 
                     var tr = $("#mytable tr td button.btn-primary[data-id=" + buttonId + "]").parents('tr')
-                    var titlePlaceholder = tr.find('td:first-child').text();
-                    var descPlaceholder = tr.find('td:nth-child(2)').text();
+                    var tds = tr.find('td');
 
-                    $('#edit-title').attr('placeholder', titlePlaceholder)
-                    $('#edit-description').attr('placeholder', descPlaceholder)
-                    $('#edit-title')[0].value = titlePlaceholder
-                    $('#edit-description')[0].value = descPlaceholder
-
+                    $('#edit-subject').val(tds[0].innerText);
+                    $('#edit-predicate').val(tds[1].innerText);
+                    $('#edit-object').val(tds[2].innerText);
                 });
 
                 $("#confirm-insert").click(function () {
-                    var title = $("#insert-title")[0].value.trim();
-                    var description = $("#insert-description")[0].value.trim();
+                    var s = $("#insert-subject").val().trim();
+                    var p = $("#insert-predicate").val().trim();
+                    var o = $("#insert-object").val().trim();
 
                     doInsertRow(
                         $('#mytable').DataTable(),
-                        title,
-                        description,
+                        s,
+                        p,
+                        o,
                         function () {
                             var alertSuccess = $('#alert-add-success');
                             alertSuccess.show();
@@ -420,8 +363,9 @@
                             alertFail.fadeOut(4000);
                         });
 
-                    $("#insert-title")[0].value = "";
-                    $("#insert-description")[0].value = "";
+                    $("#insert-subject").val("");
+                    $("#insert-predicate").val("");
+                    $("#insert-object").val("");
                 });
 
                 $("#confirm-delete").click(function () {
@@ -445,37 +389,32 @@
                 $("#confirm-update").click(function () {
                     var tr = $("#mytable tr td button.btn-primary[data-id=" + buttonId + "]").parents('tr')
 
-                    var title = $("#edit-title")[0].value.trim();
-                    var description = $("#edit-description")[0].value.trim();
-                    // console.log(title);
-                    // console.log(description);
+                    var s = $("#edit-subject").val().trim();
+                    var p = $("#edit-predicate").val().trim();
+                    var o = $("#edit-object").val().trim();
 
-                    if ($('#edit-title').attr('placeholder') == title
-                        && $('#edit-description').attr('placeholder') == description) {
-                        // console.log('no change');                
-                    } else {
-                        // console.log('changed');                
-                        doUpdateRow(
-                            $('#mytable').DataTable(),
-                            tr,
-                            title,
-                            description,
-                            function () {
-                                var alertSuccess = $('#alert-upd-success');
-                                alertSuccess.show();
-                                alertSuccess.fadeOut(2000);
-                            },
-                            function () {
-                                var alertSuccess = $('#alert-upd-success');
-                                alertSuccess.show();
-                                alertSuccess.fadeOut(2000);
-                            }
-                        );
-                    }
+                    doUpdateRow(
+                        $('#mytable').DataTable(),
+                        tr,
+                        s,
+                        p,
+                        o,
+                        function () {
+                            var alertSuccess = $('#alert-upd-success');
+                            alertSuccess.show();
+                            alertSuccess.fadeOut(2000);
+                        },
+                        function () {
+                            var alertSuccess = $('#alert-upd-success');
+                            alertSuccess.show();
+                            alertSuccess.fadeOut(2000);
+                        }
+                    );
 
+                    $("#edit-subject").val("");
+                    $("#edit-predicate").val("");
+                    $("#edit-object").val("");
                 });
-
-                $('#tr-input').hide();
 
                 $('#my-btn-filter').click(function () {
                     $('#tr-input').toggle();
@@ -484,14 +423,35 @@
                     if (disp == '筛选') {
                         disp = '取消筛选';
                     } else {
+                        $("#alert-data-loading").show();
+
+                        var mytb = $('#mytable').DataTable();
+                        mytb.clear();
+
+                        var mbody = $("#mytbody");
+                        mbody.empty();
+
+                        loadTable(
+                            table,
+                            {},
+                            max_triples_num,
+                            function () {
+                                $("#alert-data-loading").hide();
+                            },
+                            function () { }
+                        );
+
                         disp = '筛选';
                     }
                     $('#my-btn-filter span:last-child').text(disp);
                 });
 
                 $('#search-submit').click(function () {
-                    var title = $('#td-input1')[0].value.trim();
-                    var intro = $('#td-input2')[0].value.trim();
+                    $("#alert-data-loading").show();
+
+                    var sc = $('#td-input1').val().trim();
+                    var pc = $('#td-input2').val().trim();
+                    var oc = $('#td-input3').val().trim();
 
                     var mytb = $('#mytable').DataTable();
                     mytb.clear();
@@ -499,11 +459,15 @@
                     var mbody = $("#mytbody");
                     mbody.empty();
 
+                    var condition = { "s": sc, "p": pc, "o": oc }
                     loadTable(
                         table,
-                        title,
-                        intro,
-                        -1
+                        condition,
+                        max_triples_num,
+                        function () {
+                            $("#alert-data-loading").hide();
+                        },
+                        function () { }
                     );
                 });
 

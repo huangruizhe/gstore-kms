@@ -218,16 +218,12 @@
                     }
 
                     loadDB(dbname, function (data, status) {
-                        if (data == 'Database loaded successfully.') {
-                            $('#alert-db-success').show().fadeOut(2000);
+                        $('#alert-db-success').show().fadeOut(2000);
 
-                            global_dbname = dbname;
-                            dbObj.val(dbname);
+                        global_dbname = dbname;
+                        dbObj.val(dbname);
 
-                            setURL();
-                        } else {
-                            $('#alert-db-fail').show().fadeOut(4000);
-                        }
+                        setURL();
                     }, function () {
                         $('#alert-db-fail').show().fadeOut(4000);
                     });

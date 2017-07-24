@@ -59,6 +59,47 @@ gstore.unloadDB = function (on_success, on_fail) {
 }
 
 
+gstore.getSPO = function (condition, maxn, on_success, on_fail) {
+    var clause1 = "",
+        clause2 = "",
+        clause3 = "";
+
+    if (condition["s"] != undefined && condition["s"].length > 0) {
+        clause1 = "FILTER regex(str(?s), \"" + condition["s"] + "\") ";
+    }
+    if (condition["p"] != undefined && condition["p"].length > 0) {
+        clause2 = "FILTER regex(str(?p), \"" + condition["p"] + "\") ";
+    }
+    if (condition["o"] != undefined && condition["o"].length > 0) {
+        clause3 = "FILTER regex(str(?o), \"" + condition["o"] + "\") ";
+    }
+
+    var sparql = `select ?s ?p ?o where {?s ?p ?o. ${clause1} ${clause2} ${clause3}}`;
+    if (maxn > 0) {
+        sparql += ` limit ${maxn}`
+    }
+
+    gstore.query(
+        sparql,
+        function (data, status) {
+            console.log("Status: " + status + "\nData-length: " + data.length);
+
+            // parse json result
+            var obj = JSON.parse(data.replace(/"value": "\s+/g, '"value": "').replace(/\s+" }/g, '" }'));
+            var resultset = obj["results"]["bindings"].map(
+                r => [r["s"]["value"], r["p"]["value"], r["o"]["value"]]
+            );
+
+            on_success(resultset);
+        },
+        function () {
+            console.log("gstore.getTableData: failed");
+            on_fail();
+        }
+    );
+}
+
+
 gstore.getTableData = function (title_condition, intro_condition, maxn, on_success, on_fail) {
     var clause1 = "";
     var clause2 = "";
