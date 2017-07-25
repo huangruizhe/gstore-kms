@@ -66,84 +66,84 @@ function initEntityGraph(entity_id) {
     )
 }
 
-function getRowTr(s, p, o, timeStamp) {
-    var dataId = randomString(5);
-    var url = document.location.pathname + document.location.search;
+// function getRowTr(s, p, o, timeStamp) {
+//     var dataId = randomString(5);
+//     var url = document.location.pathname + document.location.search;
 
-    var tdr0 = `<td><a href="${url}#${s}">${s}</a></td>`;
-    var tdr1 = `<td>${p}</td>`;
-    var tdr2;
-    if (o.indexOf('http://www') == 0) {
-        tdr2 = `<td><a href="${url}#${o}">${o}</a></td>`;
-    } else {
-        tdr2 = `<td>${o}</td>`;
-    }
+//     var tdr0 = `<td><a href="${url}#${s}">${s}</a></td>`;
+//     var tdr1 = `<td>${p}</td>`;
+//     var tdr2;
+//     if (o.indexOf('http://www') == 0) {
+//         tdr2 = `<td><a href="${url}#${o}">${o}</a></td>`;
+//     } else {
+//         tdr2 = `<td>${o}</td>`;
+//     }
 
-    var tr = document.createElement('tr');
-    tr.innerHTML = `${tdr0}${tdr1}${tdr2}<td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
-    return tr;
-}
+//     var tr = document.createElement('tr');
+//     tr.innerHTML = `${tdr0}${tdr1}${tdr2}<td align=\"center\"><button class=\"btn btn-primary btn-xs\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td> <td align=\"center\"><button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"${dataId}\"><span class=\"glyphicon glyphicon-trash\"></span></button></td><td>${timeStamp}</td>`;
+//     return tr;
+// }
 
-function doInsertRow(table, s, p, o, on_success, on_fail) {
-    if (s.length == 0 || p.length == 0) {
-        alert("subject或predicate内容为空");
-        on_fail();
-        return;
-    }
+// function doInsertRow(table, s, p, o, on_success, on_fail) {
+//     if (s.length == 0 || p.length == 0) {
+//         alert("subject或predicate内容为空");
+//         on_fail();
+//         return;
+//     }
 
-    var tr = getRowTr(s, p, o, getTimeStamp());
+//     var tr = getRowTr(s, p, o, getTimeStamp());
 
-    gstore.insertTriple(
-        s,
-        p,
-        o,
-        function () {
-            table.row.add(tr).draw();
-            on_success();
-        },
-        function () {
-            on_fail();
-        }
-    );
-}
+//     gstore.insertTriple(
+//         s,
+//         p,
+//         o,
+//         function () {
+//             table.row.add(tr).draw();
+//             on_success();
+//         },
+//         function () {
+//             on_fail();
+//         }
+//     );
+// }
 
-function doDelRow(table, tr, on_success, on_fail) {
-    var tds = tr.find('td');
-    var s = tds[0].innerText;
-    var p = tds[1].innerText;
-    var o = tds[2].innerText;
+// function doDelRow(table, tr, on_success, on_fail) {
+//     var tds = tr.find('td');
+//     var s = tds[0].innerText;
+//     var p = tds[1].innerText;
+//     var o = tds[2].innerText;
 
-    gstore.deleteTriple(
-        s, 
-        p, 
-        o,
-        function () {
-            tr.fadeOut('slow', () => { table.row(tr[0]).remove().draw(); });
-            on_success();
-        },
-        function () {
-            on_fail();
-        }
-    );
-}
+//     gstore.deleteTriple(
+//         s, 
+//         p, 
+//         o,
+//         function () {
+//             tr.fadeOut('slow', () => { table.row(tr[0]).remove().draw(); });
+//             on_success();
+//         },
+//         function () {
+//             on_fail();
+//         }
+//     );
+// }
 
-function doUpdateRow(table, tr, s, p, o, on_success, on_fail) {
-    gstore.updateTriple(
-        s,
-        p,
-        o,
-        function () {
-            var rowObj = table.row(tr[0]).data();
-            rowObj[0] = s;
-            rowObj[1] = p;
-            rowObj[2] = o;
+// function doUpdateRow(table, tr, s, p, o, on_success, on_fail) {
+//     gstore.updateTriple(
+//         s,
+//         p,
+//         o,
+//         function () {
+//             var rowObj = table.row(tr[0]).data();
+//             rowObj[0] = s;
+//             rowObj[1] = p;
+//             rowObj[2] = o;
 
-            table.row(tr[0]).data(rowObj).draw();
+//             table.row(tr[0]).data(rowObj).draw();
 
-            on_success();
-        },
-        function () {
-            on_fail();
-        }
-    );
-}
+//             on_success();
+//         },
+//         function () {
+//             on_fail();
+//         }
+//     );
+// }

@@ -70,6 +70,7 @@ var visgexf = {
     //data = JSON.parse(twitterData);
 
     // data = JSON.parse(data);
+    // console.log(data);
 
     visgexf.sig.emptyGraph();
 

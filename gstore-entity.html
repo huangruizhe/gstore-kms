@@ -4,21 +4,19 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>知识元详情 - gStore</title>
+
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- Morris Chart Styles-->
-
     <!-- Custom Styles-->
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <!-- TABLE STYLES-->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-    <!-- DECEMBERCAFE STYLES-->
-    <!--<link href="assets/decembercafe/relationship.css" rel="stylesheet" />-->
 </head>
 
 <body>
@@ -34,9 +32,7 @@
                 </button>
                 <a class="navbar-brand" href="index.html">gStore</a>
             </div>
-
         </nav>
-        <!--/. NAV TOP  -->
 
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
@@ -62,7 +58,6 @@
                 </ul>
             </div>
         </nav>
-        <!-- /. NAV SIDE  -->
 
         <div id="page-wrapper">
             <div id="page-inner">
@@ -77,7 +72,6 @@
                             <button class="btn btn-info btn-sm" id="btn-hide-edge-label"><span class="glyphicon glyphicon-hand-up"></span> <span>不显示边标签</span> </button>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row">
@@ -125,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <table id="mytable" class="table table-bordered table-striped table-hover">
+                                <table id="mytable" class="table table-bordered table-striped table-hover" style="display:none;">
                                     <thead>
                                         <tr>
                                             <th>subject</th>
@@ -156,7 +150,6 @@
                                             <div class="form-group">
                                                 <label class="control-label" for="insert-subject">Subject</label>
                                                 <input id="insert-subject" class="form-control " type="text" placeholder="subject">
-                                                <!-- disabled -->
                                             </div>
 
                                             <div class="form-group">
@@ -174,9 +167,7 @@
                                             <button type="button" class="btn btn-warning btn-lg" id="confirm-insert" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> 新建</button>
                                         </div>
                                     </div>
-                                    <!-- /.modal-content -->
                                 </div>
-                                <!-- /.modal-dialog -->
                             </div>
 
 
@@ -194,7 +185,6 @@
                                             <div class="form-group">
                                                 <label class="control-label" for="edit-subject">Subject</label>
                                                 <input id="edit-subject" class="form-control " type="text" placeholder="subject">
-                                                <!-- disabled -->
                                             </div>
 
                                             <div class="form-group">
@@ -212,9 +202,7 @@
                                             <button type="button" class="btn btn-warning btn-lg" id="confirm-update" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> 更新</button>
                                         </div>
                                     </div>
-                                    <!-- /.modal-content -->
                                 </div>
-                                <!-- /.modal-dialog -->
                             </div>
 
 
@@ -233,7 +221,6 @@
                                             <div class="form-group">
                                                 <label class="control-label" for="delete-subject">Subject</label>
                                                 <input id="delete-subject" class="form-control " type="text" disabled="disabled" placeholder="subject">
-                                                <!-- disabled -->
                                             </div>
 
                                             <div class="form-group">
@@ -252,9 +239,7 @@
                                             <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 否</button>
                                         </div>
                                     </div>
-                                    <!-- /.modal-content -->
                                 </div>
-                                <!-- /.modal-dialog -->
                             </div>
 
                         </div>
@@ -262,13 +247,12 @@
                 </div>
 
                 <footer>
-                    <p>All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
+                    <p>The visualization is adapted from the one here: <a href="http://www.decembercafe.org/demo/relation/">decembercafe</a>.
+                        <br/> All right reserved. Template by: <a href="http://webthemez.com ">WebThemez</a></p>
                 </footer>
             </div>
-            <!-- /. PAGE INNER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
-        <!-- /. WRAPPER  -->
+
         <!-- JS Scripts-->
         <!-- jQuery Js -->
         <script src="assets/js/jquery-1.10.2.js "></script>
@@ -281,7 +265,9 @@
         <script src="assets/js/dataTables/dataTables.bootstrap.js "></script>
         <!-- Custom Js -->
         <script src="assets/js/gstore-util.js"></script>
+        <script src="assets/js/gstore-common.js"></script>
         <script src="assets/js/gstore-gstore.js"></script>
+        <script src="assets/js/gstore-table.js"></script>
         <script src="assets/decembercafe/d3.min.js"></script>
         <script src="assets/decembercafe/relation.js"></script>
         <script src="assets/js/gstore-entity.js"></script>
@@ -289,36 +275,13 @@
         <script>
             $(document).ready(function () {
 
-                $("#mytable").hide();
+                initPageURLs();
 
-                function setURL() {
-                    $("#a-dash")[0].href = getURL($("#a-dash")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-tb")[0].href = getURL($("#a-tb")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-gr")[0].href = getURL($("#a-gr")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-dt")[0].href = getURL($("#a-dt")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-sp")[0].href = getURL($("#a-sp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                    $("#a-hp")[0].href = getURL($("#a-hp")[0].href, { "ip": global_ip, "port": global_port, "db": global_dbname });
-                }
-
-                var params = parseURL(document.URL);
-                if (Object.keys(params).length > 0) {
-                    global_ip = params["ip"];
-                    global_port = params["port"];
-                    global_dbname = params["db"];
-                    document.showEdgeLabel = params["el"];
-
-                    setURL();
-                }
-
-                function getEntityShortName(eid) {
-                    return eid.substring(eid.lastIndexOf('/') + 1);
-                }
-
-                var entity_id = "http://www.summba.com/ontologies/music/周杰伦"
+                var entity_id = "http://www.summba.com/ontologies/music/周杰伦"; // default
                 if (document.location.hash.length > 0) {
                     entity_id = document.location.hash.substring(1);
                 }
-                $("#entity-name").text(getEntityShortName(entity_id));
+                $("#entity-name").text(entity_id.substring(entity_id.lastIndexOf('/') + 1));
 
                 if (document.showEdgeLabel == "true") {
                     $('#btn-hide-edge-label span:last-child').text("不显示边标签");
@@ -425,7 +388,7 @@
                             alertSuccess.fadeOut(2000);
                         }
                     );
- 
+
                     $("#edit-subject").val("");
                     $("#edit-predicate").val("");
                     $("#edit-object").val("");
