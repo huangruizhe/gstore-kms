@@ -19,7 +19,7 @@ function relation() {
 
             c.force(
                 "link",
-                d3.forceLink().links(b).id(function (a) { return a[f] }).distance(k + 70)
+                d3.forceLink().links(b).id(function (a) { return a[f] }).distance(k + 200)  // control the length of the edge
             ),
 
             this.initDrag(),

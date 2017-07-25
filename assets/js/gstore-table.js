@@ -24,6 +24,7 @@ function getRowTr(s, p, o, timeStamp) {
 }
 
 function doInsertRow(table, s, p, o, on_success, on_fail) {
+    console.log(s);
     if (s.length == 0 || p.length == 0) {
         alert("subject或predicate内容为空");
         on_fail();

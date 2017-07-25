@@ -277,6 +277,9 @@
 
                 initPageURLs();
 
+                var params = parseURL(document.URL);
+                document.showEdgeLabel = params["el"];
+
                 var entity_id = "http://www.summba.com/ontologies/music/周杰伦"; // default
                 if (document.location.hash.length > 0) {
                     entity_id = document.location.hash.substring(1);
